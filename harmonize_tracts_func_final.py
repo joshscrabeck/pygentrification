@@ -7,32 +7,32 @@ import geopandas as gpd
 from functools import reduce
 
 
-#os.chdir('/Users/wc555/gus8066/gentrification-indices/bates-freeman-data')
+os.chdir('/Users/wc555/gus8066/gentrification-indices/bates-freeman-data')
 
 #%%
 
-# ##Create test dfs##
+##Create test dfs##
 
-# #Import ACS_2020_tenure.csv and ACS_2010_tenure.csv
-# acs_2020_tenure = pd.read_csv('ACS_2020_tenure.csv', skiprows= [1]) #skip row with column descriptions
-# acs_2010_tenure = pd.read_csv('ACS_2010_tenure.csv', skiprows= [1]) 
-# shp10 = gpd.read_file('/Users/wc555/gus8066/tl_2010_42101_tract10.shp').to_crs('epsg:6565')
-# shp20 = gpd.read_file('tl_2022_42_tract.shp').to_crs('epsg:6565')
-# shp20 = shp20[shp20['COUNTYFP'] == '101']
+#Import ACS_2020_tenure.csv and ACS_2010_tenure.csv
+acs_2020_tenure = pd.read_csv('ACS_2020_tenure.csv', skiprows= [1]) #skip row with column descriptions
+acs_2010_tenure = pd.read_csv('ACS_2010_tenure.csv', skiprows= [1]) 
+shp10 = gpd.read_file('/Users/wc555/gus8066/tl_2010_42101_tract10.shp').to_crs('epsg:6565')
+shp20 = gpd.read_file('tl_2022_42_tract.shp').to_crs('epsg:6565')
+shp20 = shp20[shp20['COUNTYFP'] == '101']
 
-# #Rename relevant columns and drop unecessary columns
-# acs_2020_tenure = acs_2020_tenure.rename(columns = {'B25003_001E': 'pop_tenure', 'B25003_001M':'popten_e', 'B25003_002E': 'owners', 'B25003_002M':'owner_e', 'B25003_003E': 'renters', 'B25003_003M':'renter_e'})
-# acs_2020_tenure.dropna(axis='columns', inplace = True)
-# acs_2020_tenure = acs_2020_tenure[['GEO_ID', 'NAME', 'pop_tenure', 'owners', 'renters']]
-# acs_2020_tenure['GEO_ID'] = acs_2020_tenure['GEO_ID'].apply(lambda x: x[-11:])
-# shp_merge_2020 = shp20.merge(acs_2020_tenure, left_on = 'GEOID', right_on = 'GEO_ID', suffixes = ('_x', '_y'))
+#Rename relevant columns and drop unecessary columns
+acs_2020_tenure = acs_2020_tenure.rename(columns = {'B25003_001E': 'pop_tenure', 'B25003_001M':'popten_e', 'B25003_002E': 'owners', 'B25003_002M':'owner_e', 'B25003_003E': 'renters', 'B25003_003M':'renter_e'})
+acs_2020_tenure.dropna(axis='columns', inplace = True)
+acs_2020_tenure = acs_2020_tenure[['GEO_ID', 'NAME', 'pop_tenure', 'owners', 'renters']]
+acs_2020_tenure['GEO_ID'] = acs_2020_tenure['GEO_ID'].apply(lambda x: x[-11:])
+shp_merge_2020 = shp20.merge(acs_2020_tenure, left_on = 'GEOID', right_on = 'GEO_ID', suffixes = ('_x', '_y'))
 
 
-# acs_2010_tenure = acs_2010_tenure.rename(columns = {'B25003_001E': 'pop_tenure', 'B25003_001M':'popten_e', 'B25003_002E': 'owners', 'B25003_002M':'owner_e', 'B25003_003E': 'renters', 'B25003_003M':'renter_e'})
-# acs_2010_tenure.dropna(axis='columns', inplace = True)
-# acs_2010_tenure = acs_2010_tenure[['GEO_ID', 'NAME', 'pop_tenure', 'owners', 'renters']]
-# acs_2010_tenure['GEO_ID'] = acs_2010_tenure['GEO_ID'].apply(lambda x: x[-11:])
-# shp_merge_2010 = shp10.merge(acs_2010_tenure, left_on = 'GEOID10', right_on = 'GEO_ID', suffixes = ('_x', '_y'))
+acs_2010_tenure = acs_2010_tenure.rename(columns = {'B25003_001E': 'pop_tenure', 'B25003_001M':'popten_e', 'B25003_002E': 'owners', 'B25003_002M':'owner_e', 'B25003_003E': 'renters', 'B25003_003M':'renter_e'})
+acs_2010_tenure.dropna(axis='columns', inplace = True)
+acs_2010_tenure = acs_2010_tenure[['GEO_ID', 'NAME', 'pop_tenure', 'owners', 'renters']]
+acs_2010_tenure['GEO_ID'] = acs_2010_tenure['GEO_ID'].apply(lambda x: x[-11:])
+shp_merge_2010 = shp10.merge(acs_2010_tenure, left_on = 'GEOID10', right_on = 'GEO_ID', suffixes = ('_x', '_y'))
 
 
 #%%
@@ -63,12 +63,11 @@ def harmonize_tracts(target_df, input_dfs = []):
     
       '''
    
+    #define lists with all possible intensive and extensive variables
+    all_extensive_vars = ['pop_tenure', 'owner', 'renter', 'pop_18_24', 'pop_25_over', 'pop_18_24_edu', 'pop_25_over_edu', 'pop_race', 'white', 'tot_house', 'new_house_col1', 'new_house_col2', 'new_house_col3']
+    all_intensive_vars = ['med_fam_inc', 'med_home_val', 'med_house_inc']
+    
     #take in list of input dfs and make two lists of lists - one for extensive and one for intensive
-    
-   
-    all_extensive_vars = ['pop_tenure', 'owners', 'renters', 'pop_edu', 'pop_edu_m', 'ASdeg_m', 'BAdeg_m', 'MAdeg_m', 'profdeg_m', 'drdeg_m', 'pop_edu_f', 'ASdeg_f', 'BAdeg_f', 'MAdeg_f', 'profdeg_f', 'drdeg_f', 'pop_race', 'white','tothouse', 'newhouse_col1', 'newhouse_col2', 'newhouse_col3']
-    all_intensive_vars = ['mfi', 'mhv', 'mhi']
-    
     extensive_variables = []
     intensive_variables = []
     
@@ -90,6 +89,7 @@ def harmonize_tracts(target_df, input_dfs = []):
         else:
             intensive_variables.append(None)
     
+    
     if len(input_dfs) == 1:
         i = 1
     
@@ -97,7 +97,7 @@ def harmonize_tracts(target_df, input_dfs = []):
         i = 0
     
     varslist = 0
-    merge_dfs = [target_df]
+    merge_dfs = []
     
     for input_df in input_dfs:    
         interpolated_columns = area_interpolate(input_df, target_df, extensive_variables = extensive_variables[varslist], intensive_variables= intensive_variables[varslist])
@@ -107,6 +107,8 @@ def harmonize_tracts(target_df, input_dfs = []):
         i += 1
         varslist += 1
        
+    target_df.add_suffix(f'_yr{i}')
+    merge_dfs.append(target_df)
     
     output = reduce(lambda left,right: pd.merge(left,right, left_index = True, right_index = True, how='inner'), merge_dfs)
 
@@ -114,7 +116,7 @@ def harmonize_tracts(target_df, input_dfs = []):
 
 #%%
 
-#testdf = harmonize_tracts(shp_merge_2020, input_dfs = [shp_merge_2010])
+testdf = harmonize_tracts(shp_merge_2020, input_dfs = [shp_merge_2010])
 
 
 
