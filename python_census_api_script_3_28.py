@@ -51,39 +51,6 @@ from harmonize_tracts_func import harmonize_tracts
 # In[6]:
 
 
-# bates_vars = {'codes':['B25003_001E', 'B25003_001M', 
-#                        'B25003_002E', 'B25003_002M', 
-#                        'B25003_003E', 'B25003_003M', 
-#                        'B03002_001E', 'B03002_001M', 
-#                        'B03002_003E', 'B03002_003M', 
-#                        'B15002_001E', 'B15002_001M', 'B15002_002E', 
-#                        'B15002_002M', 'B15002_014E', 'B15002_014M', 
-#                        'B15002_015E', 'B15002_015M', 'B15002_016E', 
-#                        'B15002_016M', 'B15002_017E', 'B15002_017M', 
-#                        'B15002_018E', 'B15002_018M','B15002_019E', 
-#                        'B15002_019M', 'B15002_031E', 'B15002_031M', 
-#                        'B15002_032E', 'B15002_032M', 'B15002_033E', 
-#                        'B15002_033M', 'B15002_034E', 'B15002_034M', 
-#                        'B15002_035E', 'B15002_035M',
-#                        'B19113_001E', 'B19113_001M',
-#                        'B19013_001E', 'B19013_001M',
-#                        'B25077_001E', 'B25077_001M',
-#                        'B25034_001E', 'B25034_001M',
-#                        'B25034_002E', 'B25034_002M',
-#                        'B25034_003E', 'B25034_003M'],
-#               'columns': ['pop_ten','pop_ten_e', 'owner', 'owner_e', 'renter', 'renter_e',
-#                           'poprac', 'poprac_e', 'white', 'white_e', 'popedu', 'popedu_e',
-#                           'popedum', 'popedum_e', 'ASdegm', 'ASdegm_e', 'BAdegm', 'BAdegm_e',
-#                           'MAdegm', 'MAdegm_e', 'prodegm', 'prodegm_e', 'drdegm',
-#                           'drdegme', 'popeduf', 'popeduf_e', 'ASdegf', 'ASdegf_e',
-#                           'BAdegf', 'BAdegf_e', 'MAdegf', 'MAdegf_e', 'prodegf',
-#                           'prodegf_e', 'drdegf', 'drdegf_e', 'mfi', 'mfi_e', 'mhi', 'mhi_e',
-#                           'mhv', 'mhv_e', 'tothous', 'tothous_e', 'y14topr', 'y14topr_e',
-#                           'y10to13', 'y10to13_e',]}
-
-# test_vars = {'B25064_001E': 'med_rent_1', 'B25077_001E': 'med_home_val_1',
-#        'S1501_C01_001E': '18_24_pop_1'}
-
 def acs_request_tract(year, state, county, index_vars):
     HOST = "https://api.census.gov/data"
     year = f"{year}"
@@ -114,10 +81,6 @@ def acs_request_area(year, state, county, index_vars):
     df = pd.DataFrame(data=j[1:], columns=j[0]).rename(columns = master_tract_dict, inplace=True)
     return df
 
-# HOST = "https://api.census.gov/data"
-# year = "2000"
-# dataset = "dicennial/dicennial"
-# census_base_url_2000 = "/".join([HOST, year, dataset])
 
 def census_request_tract(year, state, county, index_vars):
     HOST = "https://api.census.gov/data"
