@@ -111,7 +111,11 @@ def merge(acs_df, t_df):
     complete_df=pd.merge(t_df, acs_df)
     return complete_df
 
+
+
 def get_api_data_tract(state, county, years, indices):
+    
+    
     
     ###Check input###
     
