@@ -15,22 +15,18 @@ ding_vars_area_yr2 = ['B25064_001E', 'B25077_001E', 'B19013_001E']
 #Variables needed for Bates(2013) and Freeman (2005) indices at tract level for year 1
 bates_vars_yr1 = ['B25003_001E', 'B25003_002E',  
               'B25003_003E', 'B03002_001E',  
-              'B03002_003E', 'S1501_C01_001E', 
-              'S1501_C01_006E',
-              'S1501_C01_005E', 'S1501_C01_012E',
-              'B19113_001E', 'B19013_001E', 
-              'B25077_001E']
+              'B03002_003E','S1501_C01_006E',
+              'S1501_C01_012E', 'B19113_001E', 
+              'B19013_001E', 'B25077_001E']
 
 #Variables needed for Bates(2013) and Freeman (2005) indices at tract level for year 2
 bates_vars_yr2 = ['B25003_001E', 'B25003_002E',  
               'B25003_003E', 'B03002_001E',  
-              'B03002_003E', 'S1501_C01_001E', 
-              'S1501_C01_006E',
-              'S1501_C01_005E', 'S1501_C01_012E',
-              'B19113_001E', 'B19013_001E', 
-              'B25077_001E', 'B25034_001E', 
-              'B25034_002E', 'B25034_003E',
-              'B25034_004E']
+              'B03002_003E', 'S1501_C01_006E',
+              'S1501_C01_012E', 'B19113_001E', 
+              'B19013_001E', 'B25077_001E', 
+              'B25034_001E', 'B25034_002E', 
+              'B25034_003E', 'B25034_004E']
 
 #Variable  needed for Bates(2013) home value index at tract level for year 0 (if year 0 is 2000)
 bates_vars_census_yr0 = ['H085001']
