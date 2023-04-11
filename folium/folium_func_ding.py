@@ -14,14 +14,14 @@ import random
 
 
 
-#result_df = gpd.read_file('C:/Users/tul54884/Documents/gus_8066/gentrification-indices/folium/dummydata.geojson')
+result_df = gpd.read_file('C:/Users/tul54884/Documents/gus_8066_scratch/dummydata.geojson')
 #%% 
 #readopting dummydataset for testing
 
-#result_df['gent_status'] = random.choices(['Nongentrifiable', 'No gentrification', 'Weak Gentrification', 'Moderate Gentrification', 'Intense Gentrification'],
-#                                          k = 408)
-#result_df['crit'] = random.choices([0,1,1.5,2,2.5,3,3.5,4], k=408)
-#result_df['gentrifying'] = random.choices([True, False], k = 408)
+result_df['gent_status'] = random.choices(['Nongentrifiable', 'No gentrification', 'Weak Gentrification', 'Moderate Gentrification', 'Intense Gentrification'],
+                                          k = 408)
+result_df['crit'] = random.choices([0,1,1.5,2,2.5,3,3.5,4], k=408)
+result_df['gentrifying'] = random.choices([True, False], k = 408)
 
 #%%
 #defining folium function to be nested in ding function, will show 2 layers of results. The first a binary of
@@ -35,19 +35,19 @@ def ding_result_map(result_df):
 # style functions to color the two layers
     def gent_status_color(feature):
         if feature['properties']['gent_status']== 'Nongentrifiable':
-            return 'gray'
+            return '#938f8f'
         elif feature['properties']['gent_status']== 'No gentrification':
             return 'white'
         elif feature['properties']['gent_status']== 'Weak Gentrification':
-            return 'yellow'
+            return '#ffffbf'
         elif feature['properties']['gent_status']== 'Moderate Gentrification':
-            return 'orange'
+            return '#fdae61'
         elif feature['properties']['gent_status']== 'Intense Gentrification':
-            return 'red'
+            return '#d7191c'
         
     def gentrifying_color(feature):
         if feature ['properties']['gentrifying']== True :
-            return '#fee5d9'
+            return '#fdae61'
         else:
             return 'white'
         
@@ -72,25 +72,27 @@ def ding_result_map(result_df):
 # using feature groups for more control over layer control and display, adding the two data layers dependent on
 # derived columns from the ding calculations, gent_status and gentrifying
 
-    layer_fg = f.FeatureGroup(name='gentrifying', show = False)
+    layer_fg = f.FeatureGroup(name='gentrifying', show = True, overlay= False)
     
     layer_fg.add_child(f.GeoJson(
         result_df,
         tooltip = f.GeoJsonTooltip(fields= ['crit']),
-        style_function = lambda feature: {'fillColor': gentrifying_color(feature),
-                                          'fillOpacity':0.4,
-                                          'weight':0},
+        style_function = lambda feature: {'color': 'gray',
+                                          'fillColor': gentrifying_color(feature),
+                                          'fillOpacity':0.5,
+                                          'weight':.3},
         name = 'gentrifying'
         ))
             
-    layer2_fg = f.FeatureGroup(name='gentrification status', show= False)
+    layer2_fg = f.FeatureGroup(name='gentrification status', show= True, overlay= False)
     
     layer2_fg.add_child(f.GeoJson(
         result_df,
         tooltip = f.GeoJsonTooltip(fields= ['gent_status']),
-        style_function = lambda feature: {'fillColor':gent_status_color(feature),
+        style_function = lambda feature: {'color': 'gray',
+                                          'fillColor':gent_status_color(feature),
                                           'fillOpacity':0.4,
-                                          'weight':0},
+                                          'weight':.3},
         name = 'Gentrification Status(detailed)'
         ))
     

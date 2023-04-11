@@ -13,7 +13,7 @@ import folium as f
 
 #%%
 
-def bates_freeman_result_map(result_df = output):
+def bates_freeman_result_map(result_df):
     
     def dem_change_index_color(feature):
         if feature ['properties']['dem_change_index']== True :
@@ -75,52 +75,56 @@ def bates_freeman_result_map(result_df = output):
     base_map.add_to(m)
     
     
-    dem_chg_layer_fg = f.FeatureGroup(name='Demographic Change Index', show = False)
+    dem_chg_layer_fg = f.FeatureGroup(name='Demographic Change Index', show = True, overlay= False)
     
     dem_chg_layer_fg.add_child(f.GeoJson(
         result_df,
         tooltip = f.GeoJsonTooltip(fields=['dem_change_index']),   #perhaps Winn wants a different popup value?
-        style_function = lambda feature: {'fillColor': dem_change_index_color(feature),
+        style_function = lambda feature: {'color': 'gray',
+                                          'fillColor': dem_change_index_color(feature),
                                           'fillOpacity':0.5,
-                                          'weight':0},
+                                          'weight':.3},
         name= 'Demographic Change Index'
         ))
     
     
-    vuln_ind_layer_fg = f.FeatureGroup(name= 'Vulnerability Index', show= False)
+    vuln_ind_layer_fg = f.FeatureGroup(name= 'Vulnerability Index', show= True, overlay= False)
     
     vuln_ind_layer_fg.add_child(f.GeoJson(
         result_df,
         tooltip= f.GeoJsonTooltip(fields= ['v_index']),
-        style_function = lambda feature:{'fillColor': vuln_index_color(feature),
+        style_function = lambda feature:{'color': 'gray',
+                                         'fillColor': vuln_index_color(feature),
                                          'fillOpacity':0.5,
-                                         'weight': 0},
+                                         'weight': .3},
         name = 'Vulnerability Index'
              ))
     
     
     
-    house_typo_layer_fg = f.FeatureGroup(name = 'Housing Typology Index', show=False)
+    house_typo_layer_fg = f.FeatureGroup(name = 'Housing Typology Index', show= True, overlay=False)
     
     house_typo_layer_fg.add_child(f.GeoJson(
         result_df,
         tooltip= f.GeoJsonTooltip(fields= ['mhv_type']),
-        style_function= lambda feature: {'fillColor': housing_typology_index_color(feature),
+        style_function= lambda feature: {'color': 'gray',
+                                         'fillColor': housing_typology_index_color(feature),
                                          'fillOpacity':0.5,
-                                         'weight':0},
+                                         'weight':.3},
         name = 'Housing Typology Index'
             ))
     
     
     
-    freeman_layer_fg = f.FeatureGroup(name= 'Freeman Index', show=False)
+    freeman_layer_fg = f.FeatureGroup(name= 'Freeman Index', show= True, overlay= False)
     
     freeman_layer_fg.add_child(f.GeoJson(
         result_df,
         tooltip=f.GeoJsonTooltip(fields= ['freeman']),
-        style_function= lambda feature: {'fillColor': freeman_index_color(feature),
+        style_function= lambda feature: {'color': 'gray',
+                                         'fillColor': freeman_index_color(feature),
                                          'fillOpacity':0.5,
-                                         'weight':0},
+                                         'weight':.3},
         name= 'Freeman Index'
         ))
     
