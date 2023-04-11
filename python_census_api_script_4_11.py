@@ -132,8 +132,7 @@ def get_api_data_tract(state, county, years, indices):
     
     #Initialize lists for yr 1 and 2 varcodes
     var_codes_yr1=[]
-    var_codes_yr2=[] #initialize with vars for total population and total housing units, which will be used to filter census tracts
-    #'B03002_001E','B25034_001E'
+    var_codes_yr2=[]
     
     #loop through indices list
     for index in indices:
@@ -178,6 +177,8 @@ def get_api_data_tract(state, county, years, indices):
             tiger_df_yr0 = tiger_request(years[0], state, county)
             #merge and assign to df_yr0
             df_yr0 = tract_merge(census_df_yr0, tiger_df_yr0)
+            #set to projected crs
+            df_yr0 = gpd.GeoDataFrame(df_yr0, geometry = 'geometry').to_crs(crs = 'EPSG:26915')
             #append df_year0 to df_list
             df_list.append(df_yr0)
         else:
@@ -187,29 +188,35 @@ def get_api_data_tract(state, county, years, indices):
             tiger_df_yr0 = tiger_request(years[0], state, county)
             #merge and assign to df_yr0
             df_yr0 = tract_merge(acs_df_yr0, tiger_df_yr0)
+            #set to projected crs
+            df_yr0 = gpd.GeoDataFrame(df_yr0, geometry = 'geometry').to_crs(crs = 'EPSG:26915')
             #append df_year0 to df_list
             df_list.append(df_yr0)
    
     
    ##year 1##
+    #assign acs_df_yr1 to output of acs_request_tract function for years[1] and var_codes_yr1
     acs_df_yr1 = acs_request_tract(years[-2], state, county, var_codes_yr1) 
-        #assign acs_df_yr1 to output of acs_request_tract function for years[1] and var_codes_yr1
+    #assign tiger_df_yr1 to output of tiger_request for years[1]
     tiger_df_yr1 = tiger_request(years[-2], state, county)    
-        #assign tiger_df_yr1 to output of tiger_request for years[1]
-    df_yr1 = tract_merge(acs_df_yr1, tiger_df_yr1)
-        #merge and assign to df_yr1
+    #merge and assign to df_yr1
+    df_yr1 = tract_merge(acs_df_yr1, tiger_df_yr1) 
+    #set to projected crs
+    df_yr1 = gpd.GeoDataFrame(df_yr1, geometry = 'geometry').to_crs(crs = 'EPSG:26915')
+    #append df_yr1 to df_list
     df_list.append(df_yr1)
-        #append df_yr1 to df_list
         
     ##year 2##
     acs_df_yr2 = acs_request_tract(years[-1], state, county, var_codes_yr2)  
-        #assign acs_df_yr2 to output of acs_request_tract function for years[2] and var_codes_yr2
+    #assign acs_df_yr2 to output of acs_request_tract function for years[2] and var_codes_yr2
     tiger_df_yr2 = tiger_request(years[-1], state, county)   
-        #assign tiger_df_yr2 to output of tiger_request for years[2]
+    #assign tiger_df_yr2 to output of tiger_request for years[2]
     df_yr2 = tract_merge(acs_df_yr2, tiger_df_yr2)
-        #merge and assign to df_yr2
+    #set to projected crs
+    df_yr2 = gpd.GeoDataFrame(df_yr2, geometry = 'geometry').to_crs(crs = 'EPSG:26915')
+    #merge and assign to df_yr2
     df_list.append(df_yr2)
-        #append df_yr2 to df_list
+    #append df_yr2 to df_list
         
     
     ###Harmonize dataframes to the tracts in year 2 and filter###
@@ -299,15 +306,17 @@ def get_api_data_county(state, county, years, indices):
     df = pd.merge(df_yr1, df_yr2, left_index = True, right_index = True, suffixes=('_yr1', '_yr2'))   
         #merge two dfs by index  and assign to df
         
+    df = df[(df['tot_pop_yr2'].astype(int) > 50) & (df['tot_house_yr2'].astype(int) > 0)]
+        
     return df    
             
 #%%
 
 ###TEST###
 
-# testdf = get_api_data_tract('42', '101', years = [2000, 2010, 2020], indices = ["ding", "bates"])
+testdf = get_api_data_tract('42', '101', years = [2000, 2010, 2020], indices = ["ding", "bates"])
 
-# testdf_area = get_api_data_county(42, 101, years = [2010,2020], indices = ["ding", "bates"])
+testdf_area = get_api_data_county(42, 101, years = [2010,2020], indices = ["ding", "bates"])
             
             
             

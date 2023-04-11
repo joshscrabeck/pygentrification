@@ -95,7 +95,7 @@ def moe_propagation(moe1, moe2):
 
 #%%
 
-def calc_batesfreeman(df_area, df_tract, cols_area = ['area_med_house_inc_yr1', 'area_med_house_inc_e_yr1', 'area_med_house_inc_yr2', 'area_med_house_inc_e_yr2', 'area_med_fam_inc_yr2', 'area_med_fam_inc_e_yr2'], cols_tract = ['pop_tenure_yr1', 'owner_yr1', 'renter_yr1', 'pop_tenure_yr2', 'owner_yr2', 'renter_yr2', 'pop_25_over_m_yr1', 'ba_degree_m_yr1', 'ma_degree_m_yr1', 'prof_degree_m_yr1', 'doc_degree_m_yr1', 'pop_25_over_m_yr2', 'ba_degree_m_yr2','ma_degree_m_yr2', 'prof_degree_m_yr2', 'doc_degree_m_yr2', 'pop_25_over_f_yr1', 'ba_degree_f_yr1', 'ma_degree_f_yr1', 'prof_degree_f_yr1', 'doc_degree_f_yr1', 'pop_25_over_f_yr2', 'ba_degree_f_yr2','ma_degree_f_yr2', 'prof_degree_f_yr2', 'doc_degree_f_yr2','pop_race_yr1', 'white_yr1', 'pop_race_yr2', 'white_yr2', 'med_fam_inc_yr2', 'med_home_val_yr0', 'med_home_val_yr1', 'med_home_val_yr2', 'med_house_inc_yr1', 'med_house_inc_yr2', 'tot_house_yr2', 'new_house_col1', 'new_house_col2', 'new_house_col3'], inplace = False):
+def calc_batesfreeman(df_area, df_tract, cols_area = ['area_med_house_inc_yr1', 'area_med_house_inc_e_yr1', 'area_med_house_inc_yr2', 'area_med_house_inc_e_yr2', 'area_med_fam_inc_yr2', 'area_med_fam_inc_e_yr2'], cols_tract = ['pop_tenure_yr1', 'owner_yr1', 'renter_yr1', 'pop_tenure_yr2', 'owner_yr2', 'renter_yr2', 'pop_25_over_yr1', 'pop_25_over_yr2', 'ba_degree_m_yr1', 'ma_degree_m_yr1', 'prof_degree_m_yr1', 'doc_degree_m_yr1', 'ba_degree_m_yr2','ma_degree_m_yr2', 'prof_degree_m_yr2', 'doc_degree_m_yr2', 'ba_degree_f_yr1', 'ma_degree_f_yr1', 'prof_degree_f_yr1', 'doc_degree_f_yr1', 'ba_degree_f_yr2','ma_degree_f_yr2', 'prof_degree_f_yr2', 'doc_degree_f_yr2','pop_race_yr1', 'white_yr1', 'pop_race_yr2', 'white_yr2', 'med_fam_inc_yr2', 'med_home_val_yr0', 'med_home_val_yr1', 'med_home_val_yr2', 'med_house_inc_yr1', 'med_house_inc_yr2', 'tot_house_yr2', 'new_house_col1', 'new_house_col2', 'new_house_col3'], inplace = False):
     '''  
     
     Parameters
@@ -213,7 +213,7 @@ def calc_batesfreeman(df_area, df_tract, cols_area = ['area_med_house_inc_yr1', 
     df = df_tract.copy(deep = True)    
     
     #rename columns for use in function
-    cols_tract_rename = ['pop_tenure_yr1', 'owner_yr1', 'renter_yr1', 'pop_tenure_yr2', 'owner_yr2', 'renter_yr2', 'pop_25_over_m_yr1', 'ba_degree_m_yr1', 'ma_degree_m_yr1', 'prof_degree_m_yr1', 'doc_degree_m_yr1', 'pop_25_over_m_yr2', 'ba_degree_m_yr2','ma_degree_m_yr2', 'prof_degree_m_yr2', 'doc_degree_m_yr2', 'pop_25_over_f_yr1', 'ba_degree_f_yr1', 'ma_degree_f_yr1', 'prof_degree_f_yr1', 'doc_degree_f_yr1', 'pop_25_over_f_yr2', 'ba_degree_f_yr2','ma_degree_f_yr2', 'prof_degree_f_yr2', 'doc_degree_f_yr2','pop_race_yr1', 'white_yr1', 'pop_race_yr2', 'white_yr2', 'med_fam_inc_yr2', 'med_home_val_yr0', 'med_home_val_yr1', 'med_home_val_yr2', 'med_house_inc_yr1', 'med_house_inc_yr2', 'tot_house_yr2', 'new_house_col1', 'new_house_col2', 'new_house_col3']
+    cols_tract_rename = ['pop_tenure_yr1', 'owner_yr1', 'renter_yr1', 'pop_tenure_yr2', 'owner_yr2', 'renter_yr2', 'pop_25_over_yr1', 'pop_25_over_yr2', 'ba_degree_m_yr1', 'ma_degree_m_yr1', 'prof_degree_m_yr1', 'doc_degree_m_yr1', 'ba_degree_m_yr2','ma_degree_m_yr2', 'prof_degree_m_yr2', 'doc_degree_m_yr2', 'ba_degree_f_yr1', 'ma_degree_f_yr1', 'prof_degree_f_yr1', 'doc_degree_f_yr1', 'ba_degree_f_yr2','ma_degree_f_yr2', 'prof_degree_f_yr2', 'doc_degree_f_yr2','pop_race_yr1', 'white_yr1', 'pop_race_yr2', 'white_yr2', 'med_fam_inc_yr2', 'med_home_val_yr0', 'med_home_val_yr1', 'med_home_val_yr2', 'med_house_inc_yr1', 'med_house_inc_yr2', 'tot_house_yr2', 'new_house_col1', 'new_house_col2', 'new_house_col3']
     col_name_dict_tract = dict(zip(cols_tract, cols_tract_rename))
     
     df = df.rename(columns = col_name_dict_tract)
@@ -358,7 +358,6 @@ def calc_batesfreeman(df_area, df_tract, cols_area = ['area_med_house_inc_yr1', 
     ##EDUCATIONAL ATTAINMENT##
 
     #calculate proportion 25+ population with and without a college degree for each tract for years 1 and 2
-    df['pop_25_over_yr1'] = df['pop_25_over_m_yr1'] + df['pop_25_over_f_yr1']
     df['pop_25_over_edu_yr1'] =  df['ba_degree_m_yr1'] + df['ma_degree_m_yr1'] + df['prof_degree_m_yr1'] + df['doc_degree_m_yr1'] + df['ba_degree_f_yr1'] + df['ma_degree_f_yr1'] + df['prof_degree_f_yr1'] + df['doc_degree_f_yr1']
     df['nocollege_yr1'] = df['pop_25_over_yr1'] - df['pop_25_over_edu_yr1']
     df['college_yr1'] = df['pop_25_over_edu_yr1']
@@ -366,7 +365,6 @@ def calc_batesfreeman(df_area, df_tract, cols_area = ['area_med_house_inc_yr1', 
     df['nocollegep_yr1'] = df['nocollege_yr1'] / df['pop_25_over_yr1']
     df['collegep_yr1'] = 1 - df['nocollegep_yr1']
     
-    df['pop_25_over_yr2'] = df['pop_25_over_m_yr2'] + df['pop_25_over_f_yr2']
     df['pop_25_over_edu_yr2'] =  df['ba_degree_m_yr2'] + df['ma_degree_m_yr2'] + df['prof_degree_m_yr2'] + df['doc_degree_m_yr2'] + df['ba_degree_f_yr2'] + df['ma_degree_f_yr2'] + df['prof_degree_f_yr2'] + df['doc_degree_f_yr2']
 
     df['nocollege_yr2'] = df['pop_25_over_yr2'] - df['pop_25_over_edu_yr2']
@@ -615,7 +613,7 @@ def calc_batesfreeman(df_area, df_tract, cols_area = ['area_med_house_inc_yr1', 
     ##YEAR STRUCTURE BUILT##
     
     #calculate whether the % housing build in last 20 years in each tract in year 2 is below the area median (yes or no)
-    if len(cols_tract) == 39: #calculating the # of housing built in the last 20 years will require 2 or 3 columns from the ACS
+    if len(cols_tract) == 37: #calculating the # of housing built in the last 20 years will require 2 or 3 columns from the ACS
         
         df['newhousp'] = (df['new_house_col1_yr2'].astype(int) + df['new_house_col2_yr2'].astype(int)) / df['tot_house_yr2'].astype(int)
     
@@ -648,8 +646,8 @@ def calc_batesfreeman(df_area, df_tract, cols_area = ['area_med_house_inc_yr1', 
     
     
     ###CREATE OUTPUT DATAFRAMES###
-    newcolumns = df[['renter_v', 'poc_v', 'nocollege_v', 'mfi_v', 'v_index', 'tenure_change', 'race_change', 'edu_change', 'income_change', 'dem_change_index','homevalueq_yr0', 'homevalueq_yr2','homevalueq_change_01','homevalueq_change_12','homevalueq_change_02','mhv_type', 'nocollege_f_index','mhi_f_index','mhv_f_index','freeman']].reset_index()
-    keepcolumns =df[[ 'GEOID','geometry']].reset_index()
+    newcolumns = df[['renter_v', 'poc_v', 'nocollege_v', 'mfi_v', 'v_index', 'tenure_change', 'race_change', 'edu_change', 'income_change', 'dem_change_index','homevalueq_yr0', 'homevalueq_yr2','homevalueq_change_01','homevalueq_change_12','homevalueq_change_02','mhv_type', 'nocollege_f_index','mhi_f_index','mhv_f_index','freeman']].reset_index(drop =  True)
+    keepcolumns =df[[ 'GEOID','geometry']].reset_index(drop = True)
     
     if inplace == False:
         output = pd.merge(keepcolumns, newcolumns, left_index= True, right_index = True)
@@ -663,7 +661,7 @@ def calc_batesfreeman(df_area, df_tract, cols_area = ['area_med_house_inc_yr1', 
 
 ###TEST###
 
-# from python_census_api_script_4_11 import testdf, testdf_area
+from python_census_api_script_4_11 import testdf, testdf_area
 
-# newdf = calc_batesfreeman(testdf_area, testdf, inplace = False)
-# samedf = calc_batesfreeman(testdf_area, testdf, inplace = True)
+newdf = calc_batesfreeman(testdf_area, testdf, inplace = False)
+samedf = calc_batesfreeman(testdf_area, testdf, inplace = True)

@@ -34,7 +34,7 @@ def harmonize_tracts(target_df, input_dfs = []):
 
     
     #define lists with all possible intensive and extensive variables
-    all_extensive_vars = ['pop_tenure', 'owner', 'renter', 'pop_25_over_m', 'ba_degree_m', 'ma_degree_m', 'prof_degree_m', 'doc_degree_m', 'pop_25_over_f', 'ba_degree_f', 'ma_degree_f', 'prof_degree_f', 'doc_degree_f',  'pop_race', 'white', 'tot_house', 'new_house_col1', 'new_house_col2', 'new_house_col3']
+    all_extensive_vars = ['tot_pop','pop_tenure', 'owner', 'renter', 'pop_25_over', 'ba_degree_m', 'ma_degree_m', 'prof_degree_m', 'doc_degree_m', 'ba_degree_f', 'ma_degree_f', 'prof_degree_f', 'doc_degree_f',  'pop_race', 'white', 'tot_house', 'new_house_col1', 'new_house_col2', 'new_house_col3']
     all_intensive_vars = ['med_rent','med_fam_inc', 'med_home_val', 'med_house_inc']
     
     #take in list of input dfs and make two lists of lists - one for extensive and one for intensive
