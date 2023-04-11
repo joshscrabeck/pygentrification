@@ -17,7 +17,6 @@ from harmonize_tracts_func_final import harmonize_tracts
 #%%
 
 ###api request base functions###
-
 def acs_request_tract(year, state, county, index_vars):
     HOST = "https://api.census.gov/data"
     year = f"{year}"
@@ -104,7 +103,7 @@ def tract_merge(acs_df, t_df):
 
 ###comprehensive api call function for tract-level###
 
-def get_api_data_tract(state, county, years, indices):
+def get_api_data_tract(state, county, years, indices, crs = 'EPSG:9802'):
      
     ###check input###
     
@@ -178,7 +177,7 @@ def get_api_data_tract(state, county, years, indices):
             #merge and assign to df_yr0
             df_yr0 = tract_merge(census_df_yr0, tiger_df_yr0)
             #set to projected crs
-            df_yr0 = gpd.GeoDataFrame(df_yr0, geometry = 'geometry').to_crs(crs = 'EPSG:26915')
+            df_yr0 = gpd.GeoDataFrame(df_yr0, geometry = 'geometry').to_crs(crs = crs)
             #append df_year0 to df_list
             df_list.append(df_yr0)
         else:
@@ -189,7 +188,7 @@ def get_api_data_tract(state, county, years, indices):
             #merge and assign to df_yr0
             df_yr0 = tract_merge(acs_df_yr0, tiger_df_yr0)
             #set to projected crs
-            df_yr0 = gpd.GeoDataFrame(df_yr0, geometry = 'geometry').to_crs(crs = 'EPSG:26915')
+            df_yr0 = gpd.GeoDataFrame(df_yr0, geometry = 'geometry').to_crs(crs = crs)
             #append df_year0 to df_list
             df_list.append(df_yr0)
    
@@ -202,7 +201,7 @@ def get_api_data_tract(state, county, years, indices):
     #merge and assign to df_yr1
     df_yr1 = tract_merge(acs_df_yr1, tiger_df_yr1) 
     #set to projected crs
-    df_yr1 = gpd.GeoDataFrame(df_yr1, geometry = 'geometry').to_crs(crs = 'EPSG:26915')
+    df_yr1 = gpd.GeoDataFrame(df_yr1, geometry = 'geometry').to_crs(crs = crs)
     #append df_yr1 to df_list
     df_list.append(df_yr1)
         
@@ -213,7 +212,7 @@ def get_api_data_tract(state, county, years, indices):
     #assign tiger_df_yr2 to output of tiger_request for years[2]
     df_yr2 = tract_merge(acs_df_yr2, tiger_df_yr2)
     #set to projected crs
-    df_yr2 = gpd.GeoDataFrame(df_yr2, geometry = 'geometry').to_crs(crs = 'EPSG:26915')
+    df_yr2 = gpd.GeoDataFrame(df_yr2, geometry = 'geometry').to_crs(crs = crs)
     #merge and assign to df_yr2
     df_list.append(df_yr2)
     #append df_yr2 to df_list
@@ -229,6 +228,7 @@ def get_api_data_tract(state, county, years, indices):
     #     input_df = input_df.to_crs('ESRI:102008')
     
     df = harmonize_tracts(target_df, input_dfs)
+    
     
            
               
@@ -285,7 +285,6 @@ def get_api_data_county(state, county, years, indices):
     ##year 1##
     #assign df_yr1 to output of acs_request_area function for years[1] and var_codes_yr1
     df_yr1 = acs_request_area(years[-2], state, county, var_codes_yr1)
-    #drop all columns except acs variables and add suffix _yr1
     
     #.add_suffix('_yr1')    
     df_yr1.add_suffix('_yr1')     
@@ -295,18 +294,18 @@ def get_api_data_county(state, county, years, indices):
        
         
     ##year 2##
+    #assign df_yr2 to output of acs_request_area function for years[2] and var_codes_yr2
     df_yr2 = acs_request_area(years[-1], state, county, var_codes_yr2)
-        #assign df_yr2 to output of acs_request_area function for years[2] and var_codes_yr2
+    #.add_suffix('_yr2')
     df_yr2.add_suffix('_yr2')
-        #drop all columns except acs variables and GEOID and add suffix _yr2
-        #.add_suffix('_yr2')
+
     for col in df_yr2.columns.to_list():
         df_yr2[col] = df_yr2[col].astype(int)
         
+    #merge two dfs by index  and assign to df
     df = pd.merge(df_yr1, df_yr2, left_index = True, right_index = True, suffixes=('_yr1', '_yr2'))   
-        #merge two dfs by index  and assign to df
         
-    df = df[(df['tot_pop_yr2'].astype(int) > 50) & (df['tot_house_yr2'].astype(int) > 0)]
+   
         
     return df    
             
