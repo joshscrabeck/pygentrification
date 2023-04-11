@@ -3,6 +3,7 @@
 import pandas as pd
 from tobler.area_weighted import area_interpolate
 from functools import reduce
+
 #%%
 
 def harmonize_tracts(target_df, input_dfs = []):
@@ -82,7 +83,9 @@ def harmonize_tracts(target_df, input_dfs = []):
         i += 1
         varslist += 1
        
-    target_df.add_suffix(f'_yr{i}')
+    target_df = target_df.add_suffix(f'_yr{i}')
+    target_df = target_df.rename(columns = {f'geometry_yr{i}': 'geometry', f'GEOID_yr{i}': 'GEOID'})
+    target_df = target_df.set_geometry('geometry')
     target_df = target_df.reset_index(drop = True)
     merge_dfs.append(target_df)
     
@@ -93,18 +96,22 @@ def harmonize_tracts(target_df, input_dfs = []):
 
 #%%
 
+###TEST###
 
-# from python_census_api_script_4_11 import acs_request_tract, tiger_request, tract_merge
-# from indices_constants import ding_vars
+# from python_census_api_script_4_11 import acs_request_tract, tiger_request, tract_merge, census_request_tract
+# from indices_constants import ding_vars, bates_vars_census_yr0
 
 # acs10 = acs_request_tract(2010, 42, 101, ding_vars)
 # acs20 = acs_request_tract(2020, 42, 101, ding_vars)
+# acs00 = census_request_tract(2000, 42, 101, bates_vars_census_yr0)
 # tiger10 = tiger_request(2010, 42, 101)
 # tiger20 = tiger_request(2020, 42, 101)
+# tiger00 = tiger_request(2000,42,101)
 # shp10 = tract_merge(acs10, tiger10)
 # shp20 = tract_merge(acs20, tiger20)
+# shp00 = tract_merge(acs00, tiger00)
 
-# test = harmonize_tracts(shp20, input_dfs = [shp10])
+# test = harmonize_tracts(shp20, input_dfs = [shp00, shp10])
 
 
 
