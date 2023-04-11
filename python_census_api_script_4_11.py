@@ -2,50 +2,22 @@
 # coding: utf-8
 
 #%%
-
-#HUD CHAS API Token
-##eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjMyZmNmNzI5NDg5NzZkMmUyNjM4MWM1ZGUxNDMyYjIwZTBjM2ViNGYxMGJiN2IzZWU2NWFiOWQ0YTIzNWFhYjI5MTRjM2MzNTNiNTYzY2ZjIn0.eyJhdWQiOiI2IiwianRpIjoiMzJmY2Y3Mjk0ODk3NmQyZTI2MzgxYzVkZTE0MzJiMjBlMGMzZWI0ZjEwYmI3YjNlZTY1YWI5ZDRhMjM1YWFiMjkxNGMzYzM1M2I1NjNjZmMiLCJpYXQiOjE2NzY5NDUyMDIsIm5iZiI6MTY3Njk0NTIwMiwiZXhwIjoxOTkyNTY0NDAyLCJzdWIiOiI0NzI2MSIsInNjb3BlcyI6W119.KXmlEzT08PT4mnJjYLNPhdGSFgDS-LYlpZn5ZpTjuN0lZFBM9ixZA0V1wlpcx99aIVSR3K6Cc2ixsT4ryXUsAA
-
-import os
+#import os
 from io import BytesIO
 import requests
-import numpy
+#import numpy
 import pandas as pd
 import json
 from zipfile import ZipFile
-from pprint import pprint
+#from pprint import pprint
 import urllib
-import shutil
+#import shutil
 import geopandas as gpd
 import warnings
-from tobler.area_weighted import area_interpolate
-from functools import reduce
-from indices_constants import ding_vars, ding_vars_area, bates_vars_acs_yr0, bates_vars_census_yr0, bates_vars_yr1, bates_vars_yr2, bates_vars_area_yr1, bates_vars_area_yr2, master_county_dict, master_tract_dict
-from harmonize_tracts_func import harmonize_tracts
-
-# HOST = "https://api.census.gov/data"
-# year = "2020"
-# dataset = "acs/acs5"
-# acs_base_url = "/".join([HOST, year, dataset])
-
-# print(acs_base_url)
-
-# HOST = "https://www2.census.gov/geo/tiger/TIGER2020/TRACT"
-# dataset = "tl_2020_42_tract.zip"
-# tiger_2020_url = "/".join([HOST, dataset])
-
-# HOST = "https://api.census.gov/data"
-# year = "2010"
-# dataset = "acs/acs5"
-# acs_base_url_2010 = "/".join([HOST, year, dataset])
-# print(acs_base_url_2010)
-
-# HOST = "https://api.census.gov/data"
-# year = "2000"
-# dataset = "dicennial/dicennial"
-# census_base_url_2000 = "/".join([HOST, year, dataset])
-
-# print(census_base_url_2000)
+#from tobler.area_weighted import area_interpolate
+#from functools import reduce
+from indices_constants import ding_vars, ding_vars_area, bates_vars_acs_yr0, bates_vars_census_yr0, bates_vars_yr1, bates_vars_yr2, bates_vars_area_yr1, bates_vars_area_yr2, master_county_dict, master_tract_dict, state_dict, state_dict_abr
+from harmonize_tracts_func_final import harmonize_tracts
 
 
 #%%
@@ -54,7 +26,7 @@ from harmonize_tracts_func import harmonize_tracts
 
 def acs_request_tract(year, state, county, index_vars):
     HOST = "https://api.census.gov/data"
-    year = "{year}"
+    year = f"{year}"
     dataset = "acs/acs5"
     acs_base_url = "/".join([HOST, year, dataset])
     #print(acs_base_url)
@@ -63,8 +35,10 @@ def acs_request_tract(year, state, county, index_vars):
     predicates["for"] = "tract:*"
     predicates["in"] = f"state:{state}, county:{county}"
     #predicates["key"] = ____________________
-    j = requests.get(acs_base_url, params=predicates).json()
+    r = requests.get(acs_base_url, params=predicates)
+    j = r.json()
     df = pd.DataFrame(data=j[1:], columns=j[0]).rename(columns = master_tract_dict)
+    df['GEOID'] = df['state']+df['county']+df['tract']
     return df
 
 def acs_request_area(year, state, county, index_vars):
@@ -94,23 +68,39 @@ def census_request_tract(year, state, county, index_vars):
     predicates["in"] = f"state:{state}, county:{county}"
     j = requests.get(census_base_url, params=predicates).json()
     df = pd.DataFrame(data=j[1:], columns=j[0]).rename(columns = master_tract_dict)
+    df['GEOID'] = df['state']+df['county']+df['tract']
+    
     return df
 
 def tiger_request(year, state, county):
-    url = f'https://www2.census.gov/geo/tiger/TIGER{year}/TRACT/tl_{year}_{state}_tract.zip'
+    if int(year) < 2010:
+        url = f'https://www2.census.gov/geo/tiger/TIGER2010/TRACT/2000/tl_2010_{state}{county}_tract00.zip'
+    elif int(year) < 2020:
+        url = f'https://www2.census.gov/geo/tiger/TIGER2010/TRACT/2010/tl_2010_{state}{county}_tract10.zip'
+    else:
+        url = f'https://www2.census.gov/geo/tiger/TIGER{year}/TRACT/tl_{year}_{state}_tract.zip'
     extract_to='.'
     t_response = urllib.request.urlopen(url)
     zipfile = ZipFile(BytesIO(t_response.read()))
     zipfile.extractall(path=extract_to)
-    t_df = gpd.read_file(f'tl_{year}_{state}_tract.shp')
+    if int(year) < 2010:
+        t_df = gpd.read_file(f'tl_2010_{state}{county}_tract00.shp')
+        t_df = t_df.rename(columns = {'TRACTCE':'tract', 'CTIDFP00':'GEOID'})
+    elif int(year) < 2020:
+        t_df = gpd.read_file(f'tl_2010_{state}{county}_tract10.shp')
+        t_df = t_df.rename(columns = {'TRACTCE':'tract', 'GEOID10':'GEOID'})
+    else:        
+        t_df = gpd.read_file(f'tl_{year}_{state}_tract.shp')
+        t_df = t_df.rename(columns = {'TRACTCE':'tract'})
+        t_df = t_df[t_df['COUNTYFP'] == f'{county}'] 
     t_df = t_df.set_geometry('geometry')
-    t_df = t_df.rename(columns = {'TRACTCE':'tract'})
-    t_df = t_df[t_df['COUNTYFP'] == f'{county}'] 
     return t_df
 
 def tract_merge(acs_df, t_df):
-    complete_df=pd.merge(t_df, acs_df)
-    return complete_df
+    df=pd.merge(t_df, acs_df, on= 'GEOID')
+    df = df[(df != '-666666666').all(axis = 1)]
+    #df = df[(df['med_rent'] != '-666666666') & (df['med_fam_inc'] != '-666666666') & (df['med_home_val'] != '-666666666') & (df['med_house_inc'] != '-666666666')]
+    return df
 
 #%%
 
@@ -135,7 +125,7 @@ def get_api_data_tract(state, county, years, indices):
     if ("bates" in indices) and (len(years) < 3):
         raise Exception("to calculate the Bates-Freeman indices, you must input three years")
         
-    if ("bates" in indices) and ((int(years[1]) - int(years[0]) < 10) or (int(years[2])- int(years[1]))):
+    if ("bates" in indices) and ((int(years[1]) - int(years[0]) < 10) or (int(years[2])- int(years[1])) < 10):
         warnings.warn("The methodology used in Bates(2013) used three study years, each 10 years apart. If you use the resulting df from this function to calculate the Bates-Freeman indices, be aware that are using a different interval between study years.")
         
     
@@ -174,6 +164,7 @@ def get_api_data_tract(state, county, years, indices):
         var_codes_yr1 = list(set(var_codes_yr1))
         var_codes_yr2 = list(set(var_codes_yr2))
                 
+        print(var_codes_yr1)
         
     ###api calls###
     
@@ -205,9 +196,9 @@ def get_api_data_tract(state, county, years, indices):
    
     
    ##year 1##
-    acs_df_yr1 = acs_request_tract(year[1], state, county, var_codes_yr1) 
+    acs_df_yr1 = acs_request_tract(years[-2], state, county, var_codes_yr1) 
         #assign acs_df_yr1 to output of acs_request_tract function for years[1] and var_codes_yr1
-    tiger_df_yr1 = tiger_request(years[1], state, county)    
+    tiger_df_yr1 = tiger_request(years[-2], state, county)    
         #assign tiger_df_yr1 to output of tiger_request for years[1]
     df_yr1 = tract_merge(acs_df_yr1, tiger_df_yr1)
         #merge and assign to df_yr1
@@ -215,9 +206,9 @@ def get_api_data_tract(state, county, years, indices):
         #append df_yr1 to df_list
         
     ##year 2##
-    acs_df_yr2 = acs_request_tract(year[2], state, county, var_codes_yr2)  
+    acs_df_yr2 = acs_request_tract(years[-1], state, county, var_codes_yr2)  
         #assign acs_df_yr2 to output of acs_request_tract function for years[2] and var_codes_yr2
-    tiger_df_yr2 = tiger_request(years[2], state, county)   
+    tiger_df_yr2 = tiger_request(years[-1], state, county)   
         #assign tiger_df_yr2 to output of tiger_request for years[2]
     df_yr2 = tract_merge(acs_df_yr2, tiger_df_yr2)
         #merge and assign to df_yr2
@@ -230,12 +221,16 @@ def get_api_data_tract(state, county, years, indices):
     target_df = df_list[-1]
     input_dfs = df_list[0:-1]
     
+    # target_df = target_df.to_crs('ESRI:102008')
+    # for input_df in input_dfs:
+    #     input_df = input_df.to_crs('ESRI:102008')
+    
     df = harmonize_tracts(target_df, input_dfs)
     
     #filter out tracts that have 0 housing units and/or less than 50 people. 
     #pop_race_yr2 is the total populationf for year 2. tot_house_yr2 is the total number of houseing units in year 2.
 
-    df = df.loc[(df['pop_race_yr2'] >= 50) & (df['tot_house_yr2'] > 0)]
+    #df = df.loc[(df['pop_race_yr2'] >= 50) & (df['tot_house_yr2'] > 0)]
            
               
     return df
