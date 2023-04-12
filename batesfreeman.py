@@ -1,13 +1,12 @@
-"""
-Calculating the Bates (2013) gentrification indices and the Freeman (2005) gentrification index
-"""
+# -*- coding: utf-8 -*-
+
+###Calculating the Bates (2013) gentrification indices and the Freeman (2005) gentrification index###
+
 #%%
 import pandas as pd
 from math import sqrt
 import numpy as np
 import geopandas as gpd
-
-
 
 #%%
 
@@ -95,7 +94,7 @@ def moe_propagation(moe1, moe2):
 
 #%%
 
-def calc_batesfreeman(df_area, df_tract, cols_area = ['area_med_house_inc_yr1', 'area_med_house_inc_e_yr1', 'area_med_house_inc_yr2', 'area_med_house_inc_e_yr2', 'area_med_fam_inc_yr2', 'area_med_fam_inc_e_yr2'], cols_tract = ['pop_tenure_yr1', 'owner_yr1', 'renter_yr1', 'pop_tenure_yr2', 'owner_yr2', 'renter_yr2', 'pop_25_over_yr1', 'pop_25_over_yr2', 'ba_degree_m_yr1', 'ma_degree_m_yr1', 'prof_degree_m_yr1', 'doc_degree_m_yr1', 'ba_degree_m_yr2','ma_degree_m_yr2', 'prof_degree_m_yr2', 'doc_degree_m_yr2', 'ba_degree_f_yr1', 'ma_degree_f_yr1', 'prof_degree_f_yr1', 'doc_degree_f_yr1', 'ba_degree_f_yr2','ma_degree_f_yr2', 'prof_degree_f_yr2', 'doc_degree_f_yr2','pop_race_yr1', 'white_yr1', 'pop_race_yr2', 'white_yr2', 'med_fam_inc_yr2', 'med_home_val_yr0', 'med_home_val_yr1', 'med_home_val_yr2', 'med_house_inc_yr1', 'med_house_inc_yr2', 'tot_house_yr2', 'new_house_col1', 'new_house_col2', 'new_house_col3'], inplace = False):
+def calc_batesfreeman(df_area, df_tract, cols_area = ['area_med_house_inc_yr1', 'area_med_house_inc_e_yr1', 'area_med_house_inc_yr2', 'area_med_house_inc_e_yr2', 'area_med_fam_inc_yr2', 'area_med_fam_inc_e_yr2'], cols_tract = ['pop_tenure_yr1', 'owner_yr1', 'renter_yr1', 'pop_tenure_yr2', 'owner_yr2', 'renter_yr2', 'pop_25_over_yr1', 'ba_degree_m_yr1', 'ma_degree_m_yr1', 'prof_degree_m_yr1', 'doc_degree_m_yr1', 'ba_degree_f_yr1', 'ma_degree_f_yr1', 'prof_degree_f_yr1', 'doc_degree_f_yr1', 'pop_25_over_yr2', 'ba_degree_m_yr2','ma_degree_m_yr2', 'prof_degree_m_yr2', 'doc_degree_m_yr2', 'ba_degree_f_yr2','ma_degree_f_yr2', 'prof_degree_f_yr2', 'doc_degree_f_yr2','pop_race_yr1', 'white_yr1', 'pop_race_yr2', 'white_yr2', 'med_fam_inc_yr2', 'med_home_val_yr0', 'med_home_val_yr1', 'med_home_val_yr2', 'med_house_inc_yr1', 'med_house_inc_yr2', 'tot_house_yr2', 'new_house_col1', 'new_house_col2', 'new_house_col3'], inplace = False):
     '''  
     
     Parameters
@@ -124,30 +123,38 @@ def calc_batesfreeman(df_area, df_tract, cols_area = ['area_med_house_inc_yr1', 
         3 'pop_tenure_yr2': B25003_001E
         4 'owner_yr2': B25003_002E
         5 'renter_yr2': B25003_003E
-        6 'pop_25_over_yr1': B15003_001E
-        7 'ba_degree_yr1': B15003_022E
-        8 'ma_degree_yr1':  B15003_023E
-        9 'prof_degree_yr1': B15003_024E
-        10 'doc_degree_yr1': B15003_025E
-        11 'pop_25_over_yr2': B15003_001E
-        12 'ba_degree_yr2': B15003_022E
-        13 'ma_degree_yr2':  B15003_023E
-        14 'prof_degree_yr2': B15003_024E
-        15 'doc_degree_yr2': B15003_025E
-        16 'pop_race_yr1': B03002_001E
-        17 'white_yr1': B03002_003E
-        18 'pop_race_yr2': B03002_001E
-        19 'white_yr2': B03002_003E
-        20 'med_fam_inc_yr2': B19113_001E
-        21 'med_home_val_yr0': H085001, B25077_001E
-        22 'med_home_val_yr1': B25077_001E
-        23 'med_home_val_yr2': B25077_001E
-        24 'med_house_inc_yr1': B19013_001E
-        25 'med_house_inc_yr2': B19013_001E
-        26 'tot_house_yr2': B25034_001E
-        27 'new_house_col1': B25034_002E
-        28 'new_house_col2': B25034_003E
-        29 'new_house_col3': B25034_004E
+        6 'pop_25_over_yr1': B15002_001E
+        7 'ba_degree_m_yr1': B15002_015E
+        8 'ma_degree_m_yr1':  B15002_016E
+        9 'prof_degree_m_yr1': B15002_017E
+        10 'doc_degree_m_yr1': B15002_018E
+        11 'ba_degree_f_yr1': B15002_032E
+        12 'ma_degree_f_yr1':  B15002_033E
+        13 'prof_degree_f_yr1': B15002_034E
+        14 'doc_degree_f_yr1': B15002_035E
+        15 'pop_25_over_yr2': B15002_001E
+        16 'ba_degree_m_yr2': B15002_015E
+        17 'ma_degree_m_yr2':  B15002_016E
+        18 'prof_degree_m_yr2': B15002_017E
+        19 'doc_degree_m_yr2': B15002_018E
+        20 'ba_degree_f_yr2': B15002_032E
+        21 'ma_degree_f_yr2':  B15002_033E
+        22 'prof_degree_f_yr2': B15002_034E
+        23 'doc_degree_f_yr2': B15002_035E
+        24 'pop_race_yr1': B03002_001E
+        25 'white_yr1': B03002_003E
+        26 'pop_race_yr2': B03002_001E
+        27 'white_yr2': B03002_003E
+        28 'med_fam_inc_yr2': B19113_001E
+        29 'med_home_val_yr0': H085001, B25077_001E
+        30 'med_home_val_yr1': B25077_001E
+        31 'med_home_val_yr2': B25077_001E
+        32 'med_house_inc_yr1': B19013_001E
+        33 'med_house_inc_yr2': B19013_001E
+        34 'tot_house_yr2': B25034_001E
+        35 'new_house_col1': B25034_002E
+        36 'new_house_col2': B25034_003E
+        37 'new_house_col3': B25034_004E
         
     inplace: Boolean
         If TRUE, function returns the original/input df with new bates-freeman index columns appended, if FALSE returns just GEOID, geometry, and the newly generated indices columns
@@ -213,7 +220,7 @@ def calc_batesfreeman(df_area, df_tract, cols_area = ['area_med_house_inc_yr1', 
     df = df_tract.copy(deep = True)    
     
     #rename columns for use in function
-    cols_tract_rename = ['pop_tenure_yr1', 'owner_yr1', 'renter_yr1', 'pop_tenure_yr2', 'owner_yr2', 'renter_yr2', 'pop_25_over_yr1', 'pop_25_over_yr2', 'ba_degree_m_yr1', 'ma_degree_m_yr1', 'prof_degree_m_yr1', 'doc_degree_m_yr1', 'ba_degree_m_yr2','ma_degree_m_yr2', 'prof_degree_m_yr2', 'doc_degree_m_yr2', 'ba_degree_f_yr1', 'ma_degree_f_yr1', 'prof_degree_f_yr1', 'doc_degree_f_yr1', 'ba_degree_f_yr2','ma_degree_f_yr2', 'prof_degree_f_yr2', 'doc_degree_f_yr2','pop_race_yr1', 'white_yr1', 'pop_race_yr2', 'white_yr2', 'med_fam_inc_yr2', 'med_home_val_yr0', 'med_home_val_yr1', 'med_home_val_yr2', 'med_house_inc_yr1', 'med_house_inc_yr2', 'tot_house_yr2', 'new_house_col1', 'new_house_col2', 'new_house_col3']
+    cols_tract_rename = ['pop_tenure_yr1', 'owner_yr1', 'renter_yr1', 'pop_tenure_yr2', 'owner_yr2', 'renter_yr2', 'pop_25_over_yr1', 'ba_degree_m_yr1', 'ma_degree_m_yr1', 'prof_degree_m_yr1', 'doc_degree_m_yr1', 'ba_degree_f_yr1', 'ma_degree_f_yr1', 'prof_degree_f_yr1', 'doc_degree_f_yr1', 'pop_25_over_yr2', 'ba_degree_m_yr2','ma_degree_m_yr2', 'prof_degree_m_yr2', 'doc_degree_m_yr2', 'ba_degree_f_yr2','ma_degree_f_yr2', 'prof_degree_f_yr2', 'doc_degree_f_yr2','pop_race_yr1', 'white_yr1', 'pop_race_yr2', 'white_yr2', 'med_fam_inc_yr2', 'med_home_val_yr0', 'med_home_val_yr1', 'med_home_val_yr2', 'med_house_inc_yr1', 'med_house_inc_yr2', 'tot_house_yr2', 'new_house_col1', 'new_house_col2', 'new_house_col3']
     col_name_dict_tract = dict(zip(cols_tract, cols_tract_rename))
     
     df = df.rename(columns = col_name_dict_tract)
@@ -646,7 +653,7 @@ def calc_batesfreeman(df_area, df_tract, cols_area = ['area_med_house_inc_yr1', 
     
     
     ###CREATE OUTPUT DATAFRAMES###
-    newcolumns = df[['renter_v', 'poc_v', 'nocollege_v', 'mfi_v', 'v_index', 'tenure_change', 'race_change', 'edu_change', 'income_change', 'dem_change_index','homevalueq_yr0', 'homevalueq_yr2','homevalueq_change_01','homevalueq_change_12','homevalueq_change_02','mhv_type', 'nocollege_f_index','mhi_f_index','mhv_f_index','freeman']].reset_index(drop =  True)
+    newcolumns = df[['renter_v', 'poc_v', 'nocollege_v', 'mfi_v', 'v_index', 'tenure_change', 'race_change', 'edu_change', 'income_change', 'dem_change_index','homevalueq_yr0', 'homevalueq_yr2','homevalueq_change_01','homevalueq_change_12','homevalueq_change_02','mhv_type', 'newhous_f_index', 'nocollege_f_index','mhi_f_index','mhv_f_index','freeman']].reset_index(drop =  True)
     keepcolumns =df[[ 'GEOID','geometry']].reset_index(drop = True)
     
     if inplace == False:

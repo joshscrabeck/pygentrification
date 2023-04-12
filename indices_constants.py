@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-"""
-Constants needed for get_api_data_tract() and get_api_data_area()
-"""
+
+###Constants needed for acs and census api requests###
+
 
 #Variables needed for Ding (2015) index at tract level fo year 1 and year 2
 ding_vars = ['B01003_001E','B25064_001E', 'B25077_001E',

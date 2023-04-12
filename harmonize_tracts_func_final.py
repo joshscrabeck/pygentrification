@@ -1,5 +1,5 @@
-
-
+# -*- coding: utf-8 -*-
+#%%
 import pandas as pd
 from tobler.area_weighted import area_interpolate
 from functools import reduce
@@ -52,19 +52,15 @@ def harmonize_tracts(target_df, input_dfs = []):
                 i_vars.append(col)
         if len(e_vars) > 0:
             extensive_variables.append(e_vars)
-            for var in e_vars:
-                input_df[var] = input_df[var].astype(int)
-                target_df[var] = target_df[var].astype(int)
         else:
             extensive_variables.append(None)
         if len(i_vars) > 0:
             intensive_variables.append(i_vars)
-            for var in i_vars:
-                input_df[var] = input_df[var].astype(int)
-                target_df[var] = target_df[var].astype(int)
+
         else:
             intensive_variables.append(None)
     
+    #initialize vars for areal interpolation loop
     if len(input_dfs) == 1:
         i = 1
     
@@ -74,6 +70,7 @@ def harmonize_tracts(target_df, input_dfs = []):
     varslist = 0
     merge_dfs = []
     
+    #use tobler's areal interpolation function and add output dfs to list
     for input_df in input_dfs:    
         interpolated_columns = area_interpolate(input_df, target_df, extensive_variables = extensive_variables[varslist], intensive_variables= intensive_variables[varslist])
         interpolated_columns.drop(['geometry'], axis = 1, inplace = True)
@@ -83,13 +80,14 @@ def harmonize_tracts(target_df, input_dfs = []):
         i += 1
         varslist += 1
        
+    #add suffix to target df, rename columns, and reset index
     target_df = target_df.add_suffix(f'_yr{i}')
     target_df = target_df.rename(columns = {f'geometry_yr{i}': 'geometry', f'GEOID_yr{i}': 'GEOID'})
     target_df = target_df.set_geometry('geometry')
     target_df = target_df.reset_index(drop = True)
     merge_dfs.append(target_df)
     
-    
+    #merge output dfs from aerial interpolation with target df
     output = reduce(lambda left,right: pd.merge(left,right, left_index = True, right_index = True, how='inner'), merge_dfs)
 
     return output

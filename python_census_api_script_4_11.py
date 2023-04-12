@@ -1,11 +1,10 @@
-#!/usr/bin/env python
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 #%%
 from io import BytesIO
 import requests
 import pandas as pd
-import json
+#import json
 from zipfile import ZipFile
 import urllib
 import geopandas as gpd
@@ -17,14 +16,14 @@ from harmonize_tracts_func_final import harmonize_tracts
 #%%
 
 ###api request base functions###
-def acs_request_tract(year, state, county, index_vars):
+def acs_request_tract(year, state, county, req_vars):
     HOST = "https://api.census.gov/data"
     year = f"{year}"
     dataset = "acs/acs5"
     acs_base_url = "/".join([HOST, year, dataset])
     #print(acs_base_url)
     predicates = {}
-    predicates["get"] = ",".join(index_vars)
+    predicates["get"] = ",".join(req_vars)
     predicates["for"] = "tract:*"
     predicates["in"] = f"state:{state}, county:{county}"
     #predicates["key"] = ____________________
@@ -33,37 +32,43 @@ def acs_request_tract(year, state, county, index_vars):
     df = pd.DataFrame(data=j[1:], columns=j[0]).rename(columns = master_tract_dict)
     df['GEOID'] = df['state']+df['county']+df['tract']
     df = df.drop(columns = ['state', 'county', 'tract'])
+    df = df.apply(pd.to_numeric, errors = 'coerce')
+    df[df<0] = 0
     return df
 
-def acs_request_area(year, state, county, index_vars):
+def acs_request_area(year, state, county, req_vars):
     HOST = "https://api.census.gov/data"
     year = f"{year}"
     dataset = "acs/acs5"
     acs_base_url = "/".join([HOST, year, dataset])
     #print(acs_base_url)
     predicates = {}
-    predicates["get"] = ",".join(index_vars)
+    predicates["get"] = ",".join(req_vars)
     predicates["for"] = f"county:{county}"
     predicates["in"] = f"state:{state}"
     #predicates["key"] = ____________________
     j = requests.get(acs_base_url, params=predicates).json()
     df = pd.DataFrame(data=j[1:], columns=j[0]).rename(columns = master_county_dict)
+    df = df.apply(pd.to_numeric, errors = 'coerce')
+    df[df<0] = 0
     return df
 
 
-def census_request_tract(year, state, county, index_vars):
+def census_request_tract(year, state, county, req_vars):
     HOST = "https://api.census.gov/data"
     year = f"{year}"
     dataset = "dec/sf3?"
     census_base_url = "/".join([HOST, year, dataset])
     predicates = {}
-    predicates["get"] = ",".join(index_vars)
+    predicates["get"] = ",".join(req_vars)
     predicates["for"] = "tract:*"
     predicates["in"] = f"state:{state}, county:{county}"
     j = requests.get(census_base_url, params=predicates).json()
     df = pd.DataFrame(data=j[1:], columns=j[0]).rename(columns = master_tract_dict)
     df['GEOID'] = df['state']+df['county']+df['tract']
     df = df.drop(columns = ['state', 'county', 'tract'])
+    df = df.apply(pd.to_numeric, errors = 'coerce')
+    df[df<0] = 0
     return df
 
 def tiger_request(year, state, county):
@@ -95,17 +100,20 @@ def tiger_request(year, state, county):
 def tract_merge(acs_df, t_df):
     acs_df = acs_df.drop(columns = ['GEOID'])
     df=pd.merge(t_df, acs_df, left_index = True, right_index =  True)
-    df = df[(df != '-666666666').all(axis = 1)]
-    #df = df[(df['med_rent'] != '-666666666') & (df['med_fam_inc'] != '-666666666') & (df['med_home_val'] != '-666666666') & (df['med_house_inc'] != '-666666666')]
     return df
 
 #%%
 
 ###comprehensive api call function for tract-level###
 
-def get_api_data_tract(state, county, years, indices, crs = 'EPSG:9802'):
+def get_api_data_tract(state, county, years, indices, crs = 'EPSG:4269'):
      
     ###check input###
+    
+    ##CRS##
+    
+    if crs == 'EPSG:4269':
+        warnings.warn("The default coordinate reference system for this function is EPSG 4269, which is a geographic crs and may lead to inaccurate areal interpolation. For the most accurate data, please set the crs parameter to a projected crs that is appropriate for your study area.")
     
     ##years##
     
@@ -218,14 +226,10 @@ def get_api_data_tract(state, county, years, indices, crs = 'EPSG:9802'):
     #append df_yr2 to df_list
         
     
-    ###Harmonize dataframes to the tracts in year 2 and filter###
+    ###Harmonize dataframes to the tracts in year 2###
 
     target_df = df_list[-1]
     input_dfs = df_list[0:-1]
-    
-    # target_df = target_df.to_crs('ESRI:102008')
-    # for input_df in input_dfs:
-    #     input_df = input_df.to_crs('ESRI:102008')
     
     df = harmonize_tracts(target_df, input_dfs)
     
@@ -244,7 +248,6 @@ def get_api_data_county(state, county, years, indices):
     years.sort()
     
     ###check input###
-    
     for year in years:
         if int(year) < 2009:
             raise ValueError("This function retrieves American Community Survey 5-yr estimates data and cannot retrieve data for years before 2009")
@@ -257,8 +260,7 @@ def get_api_data_county(state, county, years, indices):
     var_codes_yr1=[] 
     var_codes_yr2=[] 
     
-    #loop through indices list
-    
+    #loop through indices list and add vars to list
     for index in indices:
         
         if index == 'ding':
@@ -280,7 +282,6 @@ def get_api_data_county(state, county, years, indices):
     
     
     ###api calls###
-    
     
     ##year 1##
     #assign df_yr1 to output of acs_request_area function for years[1] and var_codes_yr1
@@ -313,7 +314,7 @@ def get_api_data_county(state, county, years, indices):
 
 ###TEST###
 
-testdf = get_api_data_tract('42', '101', years = [2000, 2010, 2020], indices = ["ding", "bates"])
+testdf = get_api_data_tract('42', '101', years = [2000, 2010, 2020], indices = ["ding", "bates"], crs = 'EPSG:2272')
 
 testdf_area = get_api_data_county(42, 101, years = [2010,2020], indices = ["ding", "bates"])
             
