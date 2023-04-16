@@ -17,6 +17,25 @@ from harmonize_tracts_func_final import harmonize_tracts
 
 ###api request base functions###
 def acs_request_tract(year, state, county, req_vars):
+    
+    ''' 
+    This function retrives data from the Census, 5 year 
+    American Community Survey. Each tract within the state and county will be 
+    retrieved according to the index and variables requested. 
+    
+    Parameters
+    ----------------
+    year: year (int)
+    state: FIPS State Numeric Code (int)
+    county: FIPS County Numeric Code (int)
+    req_vars: variables being requested from the Census API related to the requested index (string)
+
+    
+    Returns
+    ----------------
+    df
+    
+    '''
     HOST = "https://api.census.gov/data"
     year = f"{year}"
     dataset = "acs/acs5"
@@ -37,6 +56,24 @@ def acs_request_tract(year, state, county, req_vars):
     return df
 
 def acs_request_area(year, state, county, req_vars):
+    ''' 
+    This function retrives data from the Census, 5 year 
+    American Community Survey. This function specifically requests variables
+    for the entire study area as a whole, rather than individual census tracts.
+    
+    Parameters
+    ----------------
+    year: year (int)
+    state: FIPS State Numeric Code (int)
+    county: FIPS County Numeric Code (int)
+    req_vars: variables being requested from the Census API related to the requested index (string)
+
+    
+    Returns
+    ----------------
+    df
+    
+    '''
     HOST = "https://api.census.gov/data"
     year = f"{year}"
     dataset = "acs/acs5"
@@ -55,6 +92,25 @@ def acs_request_area(year, state, county, req_vars):
 
 
 def census_request_tract(year, state, county, req_vars):
+    ''' 
+    This function retrives data from the Decennial Census. Each tract within 
+    the state and county will be retrieved according to the index and variables 
+    requested. 
+    
+    Parameters
+    ----------------
+    year: year (int)
+    state: FIPS State Numeric Code (int)
+    county: FIPS County Numeric Code (int)
+    req_vars: variables being requested from the Census API related to the 
+    requested index (string)
+
+    
+    Returns
+    ----------------
+    df
+    
+    '''
     HOST = "https://api.census.gov/data"
     year = f"{year}"
     dataset = "dec/sf3?"
@@ -72,6 +128,22 @@ def census_request_tract(year, state, county, req_vars):
     return df
 
 def tiger_request(year, state, county):
+    ''' 
+    This function retrives data from the Decennial Census, specifically the
+    geometry. Each tract within the state and county will be 
+    retrieved. 
+    
+    Parameters
+    ----------------
+    year: year (int)
+    state: FIPS State Numeric Code (int)
+    county: FIPS County Numeric Code (int)
+    
+    Returns
+    ----------------
+    df
+    
+    '''
     if int(year) < 2010:
         url = f'https://www2.census.gov/geo/tiger/TIGER2010/TRACT/2000/tl_2010_{state}{county}_tract00.zip'
     elif int(year) < 2020:
@@ -98,6 +170,22 @@ def tiger_request(year, state, county):
     return t_df
 
 def tract_merge(acs_df, t_df):
+    ''' 
+    This function merges the dataframes from above requests to create one 
+    dataframe to be analzyed by the index calculations. 
+    
+    Parameters
+    ----------------
+    acs_df: ACS request dataframe with variable information, state, and county
+    information. 
+    t_df: tiger request dataframe with tract geometry
+
+    
+    Returns
+    ----------------
+    df
+    
+    '''
     acs_df = acs_df.drop(columns = ['GEOID'])
     df=pd.merge(t_df, acs_df, left_index = True, right_index =  True)
     return df
@@ -107,6 +195,26 @@ def tract_merge(acs_df, t_df):
 ###comprehensive api call function for tract-level###
 
 def get_api_data_tract(state, county, years, indices, crs = 'EPSG:4269'):
+    
+    ''' 
+    This function retrives data from the Census, 5 year 
+    American Community Survey. Each tract within the state and county will be 
+    retrieved according to the index and variables requested. 
+    
+    Parameters
+    ----------------
+    state: FIPS State Numeric Code (int)
+    county: FIPS County Numeric Code (int) 
+    years: years (int)
+    indices: specify the index or indices for the correct variables to be 
+    retrieved.
+    crs: usable coordinate reference system applicable to the US.
+    
+    Returns
+    ----------------
+    df
+    
+    '''
      
     ###check input###
     
@@ -243,7 +351,25 @@ def get_api_data_tract(state, county, years, indices, crs = 'EPSG:4269'):
 ###comprehensive api call function for county-level###
 
 def get_api_data_county(state, county, years, indices):
-    
+    '''  
+    This function retrives data from the Census, 5 year American Community 
+    Survey. This function specifically requests variables for the entire study 
+    area as a whole, rather than individual census tracts.
+      
+    Parameters
+    ----------------
+    state: FIPS State Numeric Code (int)
+    county: FIPS County Numeric Code (int)
+    years: years (int)
+    indices: specify the index or indices for the correct variables to be 
+    retrieved.
+    crs: usable coordinate reference system applicable to the US.
+      
+    Returns
+    ----------------
+    df
+      
+    '''
     #sort years
     years.sort()
     
