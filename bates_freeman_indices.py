@@ -668,7 +668,7 @@ def calc_batesfreeman(df_area, df_tract, cols_area = ['area_med_house_inc_yr1', 
 
 ###TEST###
 
-from python_census_api_script_4_11 import testdf, testdf_area
+from api_calls import testdf, testdf_area
 
 newdf = calc_batesfreeman(testdf_area, testdf, inplace = False)
 samedf = calc_batesfreeman(testdf_area, testdf, inplace = True)

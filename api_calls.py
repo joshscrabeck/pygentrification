@@ -10,7 +10,7 @@ import urllib
 import geopandas as gpd
 import warnings
 from indices_constants import ding_vars, ding_vars_area, bates_vars_acs_yr0, bates_vars_census_yr0, bates_vars_yr1, bates_vars_yr2, bates_vars_area_yr1, bates_vars_area_yr2, master_county_dict, master_tract_dict
-from harmonize_tracts_func_final import harmonize_tracts
+from harmonization import harmonize_tracts
 
 
 #%%
