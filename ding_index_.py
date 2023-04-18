@@ -17,8 +17,12 @@ df_tract = gpd.read_file('C:/Users/tul54884/Documents/gus_8066/gentrification-in
 
 #%% The Ding function, more detailed version
 
+<<<<<<< HEAD:ding_index_.py
 <<<<<<< HEAD:ding_index.py
 def calc_ding( df_area, df_tract, yr1, yr2, cols_area = ['area_med_rent_yr1', 'area_med_rent_yr2', 'area_med_home_val_yr1' 'area_med_home_val_yr2', 'area_med_house_inc_yr1', 'area_med_house_inc_yr2'], cols_tract=['med_rent_yr1', 'med_rent_yr2', 'med_home_val_yr1', 'med_home_val_yr2', 'pop_18_24_yr1' 'pop_18_24_yr2' 'pop_25_over_yr1', 'pop_25_over_yr2', 'pop_18_24_edu_yr1', 'pop_18_24_edu_yr2', 'pop_25_over_edu_yr1', 'pop_25_over_edu_yr2', 'med_house_inc_yr1', 'med_house_inc_yr2'], inplace = False):
+=======
+def ding_calc( df_area, df_tract, yr1, yr2, cols_area = ['area_med_rent_yr1', 'area_med_rent_yr2', 'area_med_home_val_yr1' 'area_med_home_val_yr2', 'area_med_house_inc_yr1', 'area_med_house_inc_yr2'], cols_tract=['med_rent_yr1', 'med_rent_yr2', 'med_home_val_yr1', 'med_home_val_yr2', 'tot_pop_yr1', 'tot_pop_yr2', 'bach_m_yr1', 'bach_m_yr2', 'grad_m_yr1', 'grad_m_yr2', 'bach_f_yr1', 'bach_f_yr2', 'grad_f_yr1', 'grad_f_yr2', 'med_house_inc_yr1', 'med_house_inc_yr2'], inplace = False):
+>>>>>>> 81c1f0c0870141519ef3196c671ffa3e6720d000:ding_detailed.py
 =======
 def ding_calc( df_area, df_tract, yr1, yr2, cols_area = ['area_med_rent_yr1', 'area_med_rent_yr2', 'area_med_home_val_yr1' 'area_med_home_val_yr2', 'area_med_house_inc_yr1', 'area_med_house_inc_yr2'], cols_tract=['med_rent_yr1', 'med_rent_yr2', 'med_home_val_yr1', 'med_home_val_yr2', 'tot_pop_yr1', 'tot_pop_yr2', 'bach_m_yr1', 'bach_m_yr2', 'grad_m_yr1', 'grad_m_yr2', 'bach_f_yr1', 'bach_f_yr2', 'grad_f_yr1', 'grad_f_yr2', 'med_house_inc_yr1', 'med_house_inc_yr2'], inplace = False):
 >>>>>>> 81c1f0c0870141519ef3196c671ffa3e6720d000:ding_detailed.py
