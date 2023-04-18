@@ -17,7 +17,7 @@ df_tract = gpd.read_file('C:/Users/tul54884/Documents/gus_8066/gentrification-in
 
 #%% The Ding function, more detailed version
 
-def ding_calc( df_area, df_tract, yr1, yr2, cols_area = ['area_med_rent_yr1', 'area_med_rent_yr2', 'area_med_home_val_yr1' 'area_med_home_val_yr2', 'area_med_house_inc_yr1', 'area_med_house_inc_yr2'], cols_tract=['med_rent_yr1', 'med_rent_yr2', 'med_home_val_yr1', 'med_home_val_yr2', 'pop_18_24_yr1' 'pop_18_24_yr2' 'pop_25_over_yr1', 'pop_25_over_yr2', 'pop_18_24_edu_yr1', 'pop_18_24_edu_yr2', 'pop_25_over_edu_yr1', 'pop_25_over_edu_yr2', 'med_house_inc_yr1', 'med_house_inc_yr2'], inplace = False):
+def calc_ding( df_area, df_tract, yr1, yr2, cols_area = ['area_med_rent_yr1', 'area_med_rent_yr2', 'area_med_home_val_yr1' 'area_med_home_val_yr2', 'area_med_house_inc_yr1', 'area_med_house_inc_yr2'], cols_tract=['med_rent_yr1', 'med_rent_yr2', 'med_home_val_yr1', 'med_home_val_yr2', 'pop_18_24_yr1' 'pop_18_24_yr2' 'pop_25_over_yr1', 'pop_25_over_yr2', 'pop_18_24_edu_yr1', 'pop_18_24_edu_yr2', 'pop_25_over_edu_yr1', 'pop_25_over_edu_yr2', 'med_house_inc_yr1', 'med_house_inc_yr2'], inplace = False):
     
     '''
     Parameters
