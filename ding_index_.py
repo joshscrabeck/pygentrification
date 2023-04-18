@@ -17,7 +17,11 @@ df_tract = gpd.read_file('C:/Users/tul54884/Documents/gus_8066/gentrification-in
 
 #%% The Ding function, more detailed version
 
+<<<<<<< HEAD:ding_index.py
 def calc_ding( df_area, df_tract, yr1, yr2, cols_area = ['area_med_rent_yr1', 'area_med_rent_yr2', 'area_med_home_val_yr1' 'area_med_home_val_yr2', 'area_med_house_inc_yr1', 'area_med_house_inc_yr2'], cols_tract=['med_rent_yr1', 'med_rent_yr2', 'med_home_val_yr1', 'med_home_val_yr2', 'pop_18_24_yr1' 'pop_18_24_yr2' 'pop_25_over_yr1', 'pop_25_over_yr2', 'pop_18_24_edu_yr1', 'pop_18_24_edu_yr2', 'pop_25_over_edu_yr1', 'pop_25_over_edu_yr2', 'med_house_inc_yr1', 'med_house_inc_yr2'], inplace = False):
+=======
+def ding_calc( df_area, df_tract, yr1, yr2, cols_area = ['area_med_rent_yr1', 'area_med_rent_yr2', 'area_med_home_val_yr1' 'area_med_home_val_yr2', 'area_med_house_inc_yr1', 'area_med_house_inc_yr2'], cols_tract=['med_rent_yr1', 'med_rent_yr2', 'med_home_val_yr1', 'med_home_val_yr2', 'tot_pop_yr1', 'tot_pop_yr2', 'bach_m_yr1', 'bach_m_yr2', 'grad_m_yr1', 'grad_m_yr2', 'bach_f_yr1', 'bach_f_yr2', 'grad_f_yr1', 'grad_f_yr2', 'med_house_inc_yr1', 'med_house_inc_yr2'], inplace = False):
+>>>>>>> 81c1f0c0870141519ef3196c671ffa3e6720d000:ding_detailed.py
     
     '''
     Parameters
@@ -43,16 +47,18 @@ def calc_ding( df_area, df_tract, yr1, yr2, cols_area = ['area_med_rent_yr1', 'a
         1 'med_rent_yr2': B25064_001E
         2 'med_home_val_yr1': B25077_001E
         3 'med_home_val_yr2': B25077_001E
-        4 'pop_18_24_yr1': S1501_C01_001E
-        5 'pop_18_24_yr2': S1501_C01_001E
-        6 'pop_25_over_yr1': S1501_C01_006E
-        7 'pop_25_over_yr2': S1501_C01_006E
-        8 'pop_18_24_edu_yr1': S1501_C01_005E
-        9 'pop_18_24_edu_yr2': S1501_C01_005E
-        10 'pop_25_over_edu_yr1': S1501_C01_012E
-        11 'pop_25_over_edu_yr2': S1501_C01_012E
-        12 'med_house_inc_yr1': B19013_001E
-        13 'med_house_inc_yr2': B19013_001E
+        4 'tot_pop_yr1' : C15002_001E
+        5 'tot_pop_yr2': C15002_001E
+        6 'bach_m_yr1': C15002_008E
+        7 'bach_m_yr2': C15002_008E
+        8 'grad_m_yr1': C15002_009E
+        9. 'grad_m_yr2': C15002_009E
+        10. 'bach_f_yr2': C15002_016E
+        11 'bach_f_yr2': C15002_016E
+        12. 'grad_f_yr1': C15002_017E
+        13 'grad_f_yr2': C15002_017E
+        14 'med_house_inc_yr1': B19013_001E
+        15 'med_house_inc_yr2': B19013_001E
         
     inplace: Boolean
         If True returns input df with gent status and criteria columns appended,
@@ -82,7 +88,7 @@ def calc_ding( df_area, df_tract, yr1, yr2, cols_area = ['area_med_rent_yr1', 'a
     
 # renaming columns for use in function, in case user wants to use their own
     
-    rename_cols_tract = ['med_rent_yr1', 'med_rent_yr2', 'med_home_val_yr1', 'med_home_val_yr2', 'pop_18_24_yr1' 'pop_18_24_yr2' 'pop_25_over_yr1', 'pop_25_over_yr2', 'pop_18_24_edu_yr1', 'pop_18_24_edu_yr2', 'pop_25_over_edu_yr1', 'pop_25_over_edu_yr2', 'med_house_inc_yr1', 'med_house_inc_yr2']
+    rename_cols_tract = ['med_rent_yr1', 'med_rent_yr2', 'med_home_val_yr1', 'med_home_val_yr2', 'tot_pop_yr1', 'tot_pop_yr2', 'bach_m_yr1', 'bach_m_yr2', 'grad_m_yr1', 'grad_m_yr2', 'bach_f_yr1', 'bach_f_yr2', 'grad_f_yr1', 'grad_f_yr2', 'med_house_inc_yr1', 'med_house_inc_yr2']
     cols_name_dict_tract = dict(zip(cols_tract, rename_cols_tract))
     
     df = df.rename( columns = cols_name_dict_tract)
@@ -99,19 +105,24 @@ def calc_ding( df_area, df_tract, yr1, yr2, cols_area = ['area_med_rent_yr1', 'a
 # Creating figures of total adult & adult educated population
     
     
-    df['pop_yr1'] = df['pop_18_24_yr1'] + df['pop_25_over_yr1'] 
-    df['pop_yr2'] = df['pop_18_24_yr2'] + df['pop_25_over_yr2']
+    edu_male_yr1 = df['bach_m_yr1'] + df['grad_m_yr1']
+    edu_male_yr2 = df['bach_m_yr2'] + df['grad_m_yr2']
     
-    df['edu_pop_yr1'] = df['pop_18_24_edu_yr1'] + df['pop_25_over_edu_yr1']
-    df['edu_pop_yr2'] = df['pop_18_24_edu_yr2'] + df['pop_25_over_edu_yr2']
+    edu_female_yr1 = df['bach_f_yr1'] + df['grad_f_yr1']
+    edu_female_yr2 = df['bach_f_yr2'] + df['grad_f_yr2']
+    
+    
+    
+    df['edu_tot_pop_yr1'] = edu_male_yr1 + edu_female_yr1
+    df['edu_tot_pop_yr2'] = edu_male_yr2 + edu_female_yr2
     
     
     
     
 # Deriving change in share of college educated residents
     
-    df['edu_perc_yr1'] = (df['edu_pop_yr1'] / df['pop_yr1'])*100
-    df['edu_perc_yr2'] = (df['edu_pop_yr2'] / df['pop_yr2'])*100
+    df['edu_perc_yr1'] = (df['edu_tot_pop_yr1'] / df['tot_pop_yr1'])*100
+    df['edu_perc_yr2'] = (df['edu_tot_pop_yr2'] / df['tot_pop_yr2'])*100
     chg_edu_share = df['edu_perc_yr2'] - df['edu_perc_yr1']
     
 # deriving changes in median rents and home values per tract
@@ -121,31 +132,31 @@ def calc_ding( df_area, df_tract, yr1, yr2, cols_area = ['area_med_rent_yr1', 'a
     
 #  city wide figures
     
-    area_pop_yr1 = df['pop_yr1'].sum()
-    area_edu_pop_yr1 = df['edu_pop_yr1'].sum()
-    area_edu_share_yr1 = (area_edu_pop_yr1 / area_pop_yr1)*100
+    area_tot_pop_yr1 = df['tot_pop_yr1'].sum()
+    area_edu_tot_pop_yr1 = df['edu_tot_pop_yr1'].sum()
+    area_edu_share_yr1 = (area_edu_tot_pop_yr1 / area_tot_pop_yr1)*100
     
-    area_pop_yr2 = df['pop_yr2'].sum()
-    area_edu_pop_yr2 = df['edu_pop_yr2'].sum()
-    area_edu_share_yr2 = (area_edu_pop_yr2 / area_pop_yr2)*100
+    area_tot_pop_yr2 = df['tot_pop_yr2'].sum()
+    area_edu_tot_pop_yr2 = df['edu_tot_pop_yr2'].sum()
+    area_edu_share_yr2 = (area_edu_tot_pop_yr2 / area_tot_pop_yr2)*100
     
     area_chg_edu_share = area_edu_share_yr2 - area_edu_share_yr1
     
   
-    area_home_val_perc_inc = ((df_area['area_med_home_val_yr2'] - df_area['area_med_home_val_yr1'])/ df_area['area_med_home_val_yr2'])*100
-    area_med_rent_perc_inc = ((df_area['area_med_rent_yr2'] - df_area['area_med_rent_yr1'])/ df_area['area_med_rent_yr2'])*100
+    area_home_val_perc_inc = ((df_area.iloc[0]['area_med_home_val_yr2'] - df_area.iloc[0]['area_med_home_val_yr1'])/ df_area.iloc[0]['area_med_home_val_yr2'])*100
+    area_med_rent_perc_inc = ((df_area.iloc[0]['area_med_rent_yr2'] - df_area.iloc[0]['area_med_rent_yr1'])/ df_area.iloc[0]['area_med_rent_yr2'])*100
     
     #% Calculating ding index and creating a resulting dataframe with the tracts meeting the criteria
     
-    df['gentrifiable'] = np.where(df['med_house_inc_yr1'] < df_area['area_med_house_inc_yr1'], True, False)
+    df['gentrifiable'] = np.where(df['med_house_inc_yr1'] < df_area.iloc[0]['area_med_house_inc_yr1'], True, False)
     
-    df['hhi_crit'] = np.where((df['gentrifiable'] == True) & (df['pop_yr1'] > 50), 1, 0)
+    df['hhi_crit'] = np.where((df['gentrifiable'] == True) & (df['tot_pop_yr1'] > 50), 1, 0)
     
-    df['rent_crit'] = np.where((chg_med_rent > area_med_rent_perc_inc) & (df['pop_yr1'] > 50), .5, 0)
+    df['rent_crit'] = np.where((chg_med_rent > area_med_rent_perc_inc) & (df['tot_pop_yr1'] > 50), .5, 0)
     
-    df['val_crit'] = np.where((chg_med_home_val > area_home_val_perc_inc) & (df['pop_yr1'] > 50), .5, 0)
+    df['val_crit'] = np.where((chg_med_home_val > area_home_val_perc_inc) & (df['tot_pop_yr1'] > 50), .5, 0)
     
-    df['edu_crit'] = np.where((chg_edu_share > area_chg_edu_share) & (df['pop_yr1'] > 50), 1, 0)
+    df['edu_crit'] = np.where((chg_edu_share > area_chg_edu_share) & (df['tot_pop_yr1'] > 50), 1, 0)
     
     
     df['crit'] = df['hhi_crit'] + df['rent_crit'] + df['val_crit'] + df['edu_crit']
