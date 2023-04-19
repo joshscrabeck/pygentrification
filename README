@@ -1,1 +1,71 @@
-ReadMe
+# Gentrification Indices
+
+A python module for calculating and visualizing gentrification indices from published academic research
+
+## Description
+
+The term “gentrification” encapsulates complex and interconnected social, economic, political, and physical processes that lead to a specific type of neighborhood change. Dr. Devin Bunten, an Assistant Professor of Urban Economics and Housing at MIT, defined gentrification as “…the territorial expansion of a wealthy community into a disinvested neighborhood, the installation of the social and legal regimes of the newcomers, and the deployment of new physical capital, both on a small scale – by homeowners undertaking renovations – and on a larger scale, by landed capitalists and public sector officials keen to raise revenue. It is the disruption and displacement of the original residents and their spatially realized social networks.” [^1] 
+ 
+
+Government – at local, state, and federal lees – creates conditions that facilitate gentrification processes through targeted policy, investment, and subsidies. These conditions enable private actors, such as developers, lenders, builders, and real estate companies, to generate and accumulate wealth in neighborhoods that previously experienced chronic disinvestment[^2]. Together, these actors can “revitalize” a neighborhood, but with profit as their primary motivator, they have little incentive to consider the social and cultural fabric of a neighborhood or the communities that will be able to experience the benefits of their investment. 
+
+Gentrification also requires newcomers. In early stages of gentrification, newcomers, who are often white with lower incomes and high levels of educational attainment, may be drawn to historically disinvested neighborhoods because of their need for affordable housing. These newcomers can serve as a signal of gentrification potential for developers and may advocate for new investment and amenities in their neighborhood. This neighborhood change, in turn, can draw wealthier newcomers who can afford increased housing costs[^2]. 
+
+Gentrification is one cause of displacement. Residents in gentrifying neighborhoods can be forced to move due to increasing costs of rentals, property taxes, and local amenities, which can lead to evictions, foreclosures, and pressure for low-income homeowners to sell well below the market value of their homes to predatory buyers[^3]. Even if long-time residents do not physically move, they can experience displacement from their social networks, local culture, and sense of community[^2].   
+
+Researchers have developed many methods to quantify, measure, and predict the complex processgentrification. These methods generally rely on multiple datasets over a a certain time period.
+
+## Getting Started
+
+### Dependencies
+
+* Describe any prerequisites, libraries, OS version, etc., needed before installing program.
+* ex. Windows 10
+
+### Installing
+
+* How/where to download your program
+* Any modifications needed to be made to files/folders
+
+### Executing program
+
+* How to run the program
+* Step-by-step bullets
+```
+code blocks for commands
+```
+
+## Help
+
+Any advise for common problems or issues.
+```
+command to run if program contains helper info
+```
+
+## Authors
+
+Contributors names and contact info
+
+ex. Dominique Pizzie  
+ex. [@DomPizzie](https://twitter.com/dompizzie)
+
+## Version History
+
+* 0.2
+    * Various bug fixes and optimizations
+    * See [commit change]() or See [release history]()
+* 0.1
+    * Initial Release
+
+## License
+
+This project is licensed under the [NAME HERE] License - see the LICENSE.md file for details
+
+## Acknowledgments
+
+Inspiration, code snippets, etc.
+* [awesome-readme](https://github.com/matiassingers/awesome-readme)
+* [PurpleBooth](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
+* [dbader](https://github.com/dbader/readme-template)
+* [zenorocha](https://gist.github.com/zenorocha/4526327)
+* [fvcproductions](https://gist.github.com/fvcproductions/1bfc2d4aecb01a834b46)

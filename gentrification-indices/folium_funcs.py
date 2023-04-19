@@ -269,5 +269,11 @@ def bates_freeman_result_map(result_df, filename = 'bates_freeman_map.html'):
 #%%
 ###TEST###
 
+from bates_freeman_indices import samedf, newdf
+
+bates_freeman_result_map(samedf)
+
+
+
 # ding_result_map(result_df).save('test.html')
 # webbrowser.open("test.html")

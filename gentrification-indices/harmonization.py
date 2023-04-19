@@ -89,6 +89,7 @@ def harmonize_tracts(target_df, input_dfs = []):
     
     #merge output dfs from aerial interpolation with target df
     output = reduce(lambda left,right: pd.merge(left,right, left_index = True, right_index = True, how='inner'), merge_dfs)
+    
 
     return output
 

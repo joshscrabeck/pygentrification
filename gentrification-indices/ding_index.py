@@ -9,10 +9,10 @@ import geopandas as gpd
 import folium
 
 
-os.getcwd()
-os.chdir('.\documents\gus_8066\gentrification-indices\ding')
+# os.getcwd()
+# os.chdir('.\documents\gus_8066\gentrification-indices\ding')
 
-df_tract = gpd.read_file('C:/Users/tul54884/Documents/gus_8066/gentrification-indices/folium/dummydata.geojson')
+# df_tract = gpd.read_file('C:/Users/tul54884/Documents/gus_8066/gentrification-indices/folium/dummydata.geojson')
 
 
 #%% The Ding function, more detailed version
@@ -180,11 +180,11 @@ def calc_ding( df_area, df_tract, cols_area = ['area_med_rent_yr1', 'area_med_re
     quant_home_vals = np.quantile(gent_only_df['med_home_val_yr2'], [0, 0.25, 0.50, 0.75, 1])
     
     conditions = [
-        df['gentrifying'] == True & df['med_rent_yr2'] <= quant_rent_vals[1] & df['med_home_val_yr2'] <= quant_home_vals[1],
-        df['gentrifying'] == True & (df['med_rent_yr2'] <= quant_rent_vals[3] or df['med_home_val_yr2'] <= quant_home_vals[3]),
-        df['gentrifying'] == True & (df['med_rent_yr2'] > quant_rent_vals[3] or df['med_home_val_yr2'] > quant_home_vals[3]),
-        df['gentrifiable'] == True & df['gentrifying'] == False,
-        df['gentrifiable'] == False
+        (df['gentrifying'] == True) & (df['med_rent_yr2'] <= quant_rent_vals[1]) & (df['med_home_val_yr2'] <= quant_home_vals[1]),
+        (df['gentrifying'] == True) & ((df['med_rent_yr2'] <= quant_rent_vals[3]) | (df['med_home_val_yr2'] <= quant_home_vals[3])),
+        (df['gentrifying'] == True) & ((df['med_rent_yr2'] > quant_rent_vals[3]) | (df['med_home_val_yr2'] > quant_home_vals[3])),
+        (df['gentrifiable'] == True) & (df['gentrifying'] == False),
+        (df['gentrifiable'] == False)
         ]
     
     choices = [
@@ -214,5 +214,10 @@ def calc_ding( df_area, df_tract, cols_area = ['area_med_rent_yr1', 'area_med_re
     return output
 
 
+#%%
 
+from api_calls import testdf, testdf_area
+
+newdf = calc_ding(testdf_area, testdf, inplace = False)
+samedf = calc_ding(testdf_area, testdf, inplace = True)
 

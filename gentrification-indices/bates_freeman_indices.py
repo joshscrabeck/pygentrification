@@ -662,6 +662,8 @@ def calc_batesfreeman(df_area, df_tract, cols_area = ['area_med_house_inc_yr1', 
     else:
         output = pd.merge(copy_df, newcolumns, left_index= True, right_index = True)
         
+    #output = gpd.GeoDataFrame(output, geometry = 'geometry', crs = 'EPSG:2272')
+        
     return output
 
 #%%
@@ -669,6 +671,10 @@ def calc_batesfreeman(df_area, df_tract, cols_area = ['area_med_house_inc_yr1', 
 ###TEST###
 
 from api_calls import testdf, testdf_area
+import matplotlib as plt
 
 newdf = calc_batesfreeman(testdf_area, testdf, inplace = False)
 samedf = calc_batesfreeman(testdf_area, testdf, inplace = True)
+
+fig, ax = plt.subplots(figsize=(10,10))
+newdf.plot
