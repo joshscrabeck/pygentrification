@@ -188,7 +188,6 @@ def tract_merge(acs_df, t_df):
     
     '''
     acs_df = acs_df.drop(columns = ['GEOID'])
-    #df=pd.merge(t_df, acs_df, left_index = True, right_index =  True)
     gdf = t_df.merge(acs_df, left_index = True, right_index =  True)
 
     return gdf
@@ -291,23 +290,19 @@ def get_api_data_tract(state, county, years, indices, crs = 'EPSG:4269'):
         if int(years[0]) == 2000:
             #assign census_df_yr0 to output of census_request_tract function for 2000 and var_codes_yr0
             census_df_yr0 = census_request_tract(years[0], state, county, var_codes_yr0)
-            #assign tiger_df_yr0 to output of tiger_request for 2000
+            #assign tiger_df_yr0 to output of tiger_request for 2000 and set crs
             tiger_df_yr0 = tiger_request(years[0], state, county).to_crs(crs = crs)
             #merge and assign to df_yr0
             df_yr0 = tract_merge(census_df_yr0, tiger_df_yr0)
-            #set to projected crs
-            #df_yr0 = gpd.GeoDataFrame(df_yr0, geometry = 'geometry').to_crs(crs = crs)
             #append df_year0 to df_list
             df_list.append(df_yr0)
         else:
             #assign acs_df_yr0 to output of acs_request_tract function for years[0] and var_codes_yr0
             acs_df_yr0 = acs_request_tract(years[0], state, county, var_codes_yr0)
-            #assign tiger_df_yr0 to output of tiger_request for years[0]
+            #assign tiger_df_yr0 to output of tiger_request for years[0] and set crs
             tiger_df_yr0 = tiger_request(years[0], state, county).to_crs(crs = crs)
             #merge and assign to df_yr0
             df_yr0 = tract_merge(acs_df_yr0, tiger_df_yr0)
-            #set to projected crs
-            #df_yr0 = gpd.GeoDataFrame(df_yr0, geometry = 'geometry').to_crs(crs = crs)
             #append df_year0 to df_list
             df_list.append(df_yr0)
    
@@ -315,26 +310,22 @@ def get_api_data_tract(state, county, years, indices, crs = 'EPSG:4269'):
    ##year 1##
     #assign acs_df_yr1 to output of acs_request_tract function for years[1] and var_codes_yr1
     acs_df_yr1 = acs_request_tract(years[-2], state, county, var_codes_yr1) 
-    #assign tiger_df_yr1 to output of tiger_request for years[1]
+    #assign tiger_df_yr1 to output of tiger_request for years[1] and set crs
     tiger_df_yr1 = tiger_request(years[-2], state, county).to_crs(crs = crs)    
     #merge and assign to df_yr1
     df_yr1 = tract_merge(acs_df_yr1, tiger_df_yr1)
-    #set to projected crs
-    #df_yr1 = gpd.GeoDataFrame(df_yr1, geometry = 'geometry').to_crs(crs = crs)
     #append df_yr1 to df_list
     df_list.append(df_yr1)
         
     ##year 2##
-    acs_df_yr2 = acs_request_tract(years[-1], state, county, var_codes_yr2)  
     #assign acs_df_yr2 to output of acs_request_tract function for years[2] and var_codes_yr2
-    tiger_df_yr2 = tiger_request(years[-1], state, county).to_crs(crs = crs)   
-    #assign tiger_df_yr2 to output of tiger_request for years[2]
-    df_yr2 = tract_merge(acs_df_yr2, tiger_df_yr2)
-    #set to projected crs
-    #df_yr2 = gpd.GeoDataFrame(df_yr2, geometry = 'geometry').to_crs(crs = crs)
+    acs_df_yr2 = acs_request_tract(years[-1], state, county, var_codes_yr2)  
+    #assign tiger_df_yr2 to output of tiger_request for years[2] and set crs
+    tiger_df_yr2 = tiger_request(years[-1], state, county).to_crs(crs = crs)
     #merge and assign to df_yr2
-    df_list.append(df_yr2)
+    df_yr2 = tract_merge(acs_df_yr2, tiger_df_yr2)    
     #append df_yr2 to df_list
+    df_list.append(df_yr2)
         
     
     ###Harmonize dataframes to the tracts in year 2###
@@ -344,7 +335,7 @@ def get_api_data_tract(state, county, years, indices, crs = 'EPSG:4269'):
     
     df = harmonize_tracts(target_df, input_dfs)
     
-    df = gpd.GeoDataFrame(df, geometry = 'geometry', crs = 'EPSG:4269')
+    df = df.to_crs('EPSG:4269')
            
     return df
 
@@ -439,11 +430,11 @@ def get_api_data_county(state, county, years, indices):
             
 #%%
 
-###TEST###
+###TESTING###
 
-testdf = get_api_data_tract('42', '101', years = [2000, 2010, 2020], indices = ["ding", "bates"] , crs = 'EPSG:2272')
+# testdf = get_api_data_tract('42', '101', years = [2000, 2010, 2020], indices = ["ding", "bates"] , crs = 'EPSG:2272')
 
-testdf_area = get_api_data_county(42, 101, years = [2010,2020], indices = ["ding", "bates"])
+# testdf_area = get_api_data_county(42, 101, years = [2010,2020], indices = ["ding", "bates"])
             
             
             

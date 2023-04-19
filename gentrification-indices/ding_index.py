@@ -1,21 +1,12 @@
-#Simple binary result Ding method for gentrification indentification
+###Calculating the Ding (2016) gentrification index###
+
 
 #%%
-
 import pandas as pd
-import os
 import numpy as np
-import geopandas as gpd
-import folium
 
 
-# os.getcwd()
-# os.chdir('.\documents\gus_8066\gentrification-indices\ding')
-
-# df_tract = gpd.read_file('C:/Users/tul54884/Documents/gus_8066/gentrification-indices/folium/dummydata.geojson')
-
-
-#%% The Ding function, more detailed version
+#%% 
 
 
 def calc_ding( df_area, df_tract, cols_area = ['area_med_rent_yr1', 'area_med_rent_yr2', 'area_med_home_val_yr1', 'area_med_home_val_yr2', 'area_med_house_inc_yr1', 'area_med_house_inc_yr2'], cols_tract=['med_rent_yr1', 'med_rent_yr2', 'med_home_val_yr1', 'med_home_val_yr2', 'pop_25_over_yr1' 'ba_degree_m_yr1', 'ma_degree_m_yr1', 'prof_degree_m_yr1', 'doc_degree_m_yr1, ba_degree_f_yr1', 'ma_degree_f_yr1', 'prof_degree_f_yr1', 'doc_degree_f_yr1', 'pop_25_over_yr2', 'ba_degree_m_yr2', 'ma_degree_m_yr2', 'prof_degree_m_yr2', 'doc_degree_m_yr2', 'ba_degree_f_yr2', 'ma_degree_f_yr2', 'prof_degree_f_yr2', 'doc_degree_f_yr2', 'med_house_inc_yr1', 'med_house_inc_yr2'], inplace = False):
@@ -215,9 +206,10 @@ def calc_ding( df_area, df_tract, cols_area = ['area_med_rent_yr1', 'area_med_re
 
 
 #%%
+#TESTING
 
-from api_calls import testdf, testdf_area
+# from api_calls import testdf, testdf_area
 
-newdf = calc_ding(testdf_area, testdf, inplace = False)
-samedf = calc_ding(testdf_area, testdf, inplace = True)
+# newdf = calc_ding(testdf_area, testdf, inplace = False)
+# samedf = calc_ding(testdf_area, testdf, inplace = True)
 

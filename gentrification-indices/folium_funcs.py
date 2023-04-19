@@ -1,26 +1,5 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Apr  3 18:28:49 2023
 
-@author: tul54884
-"""
-
-# import pandas as pd
 import folium as f
-# import geopandas as gpd
-import webbrowser
-# import random
-
-#%% 
-#dummy data for testing
-
-# result_df = gpd.read_file('C:/Users/tul54884/Documents/gus_8066_scratch/dummydata.geojson')
-
-# result_df['gent_status'] = random.choices(['Nongentrifiable', 'No gentrification', 'Weak Gentrification', 'Moderate Gentrification', 'Intense Gentrification'],
-#                                           k = 408)
-# result_df['crit'] = random.choices([0,1,1.5,2,2.5,3,3.5,4], k=408)
-
-# result_df['gentrifying'] = random.choices([True, False], k = 408)
 
 #%%
 
@@ -39,9 +18,7 @@ def ding_result_map(result_df, filename = 'ding_map.html'):
     References
     -------------
     https://python-visualization.github.io/folium/
-    
-    Notes
-    -----------    
+     
       '''
     
 # style functions to color the two layers
@@ -116,8 +93,6 @@ def ding_result_map(result_df, filename = 'ding_map.html'):
     
     m.save(filename)
     
-    webbrowser.open(filename)
-    
     return m
 
 #%%
@@ -136,9 +111,7 @@ def bates_freeman_result_map(result_df, filename = 'bates_freeman_map.html'):
     References
     -------------
     https://python-visualization.github.io/folium/
-    
-    Notes
-    -----------    
+       
       '''
     
     def dem_change_index_color(feature):
@@ -262,18 +235,16 @@ def bates_freeman_result_map(result_df, filename = 'bates_freeman_map.html'):
     
     m.save(filename)
     
-    webbrowser.open(filename)
-    
     return m
 
 #%%
-###TEST###
+###TESTING###
 
-from bates_freeman_indices import samedf, newdf
+# from bates_freeman_indices import samedf, newdf
 
-bates_freeman_result_map(samedf)
+# bates_freeman_result_map(samedf)
 
 
 
-# ding_result_map(result_df).save('test.html')
-# webbrowser.open("test.html")
+# # ding_result_map(result_df).save('test.html')
+# # webbrowser.open("test.html")
