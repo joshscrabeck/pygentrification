@@ -11,16 +11,78 @@ Government – at local, state, and federal lees – creates conditions that fac
 
 Gentrification also requires newcomers. In early stages of gentrification, newcomers, who are often white with lower incomes and high levels of educational attainment, may be drawn to historically disinvested neighborhoods because of their need for affordable housing. These newcomers can serve as a signal of gentrification potential for developers and may advocate for new investment and amenities in their neighborhood. This neighborhood change, in turn, can draw wealthier newcomers who can afford increased housing costs[^2]. 
 
-Gentrification is one cause of displacement. Residents in gentrifying neighborhoods can be forced to move due to increasing costs of rentals, property taxes, and local amenities, which can lead to evictions, foreclosures, and pressure for low-income homeowners to sell well below the market value of their homes to predatory buyers[^3]. Even if long-time residents do not physically move, they can experience displacement from their social networks, local culture, and sense of community[^2].   
+Gentrification is one cause of displacement. Residents in gentrifying neighborhoods can be forced to move due to increasing costs of rentals, property taxes, and local amenities, which can lead to evictions, foreclosures, and pressure for low-income homeowners to sell well below the market value of their homes to predatory buyers. Even if long-time residents do not physically move, they can experience displacement from their social networks, local culture, and sense of community[^2].   
 
-Researchers have developed many methods to quantify, measure, and predict the complex processgentrification. These methods generally rely on multiple datasets over a a certain time period.
+Researchers have developed many methods to quantify, measure, and predict the complex processgentrification. These methods generally use on multiple indicators at several time periods. Researchers combine these indicators, as well as changes in those indicators over time, into an index that aim to quantify if the area has gentrified, if the area is vulnerable to gentrification, or some of other measure related to their particular theory of gentrification. Indicators often include measures related to race, educational attainment, housing costs, and housing tenure.
+
+We developed this package to allow researchers to explore and compare different gentrification indices for their area of interest. The first version of this package has functions to calculate the indices from Bates (2013)[^3] and Ding et al. (2016)[^4], which both can be calculated from American Community Survey and Census data. 
+
+### Bates (2013)
+
+Bates (2013) calculated three indices using data from three years, each 10 years apart, (years 0-2) that together give a picture of gentrification in an area of interest: vulnerability to gentrification, presence of gentrification-related demographic change, and home value typology. The gentrification-related demographic change index is based on the gentrification index presented in Freeman (2005)[^5].   
+
+#### Bates (2013) - Vulnerability to Gentrification
+| Indicator      | Output values |  variable  |
+| ------------------------------------ | ------------------------------------------ | -----------  |
+| % Renters at census tract and county levels | 0: % Renters in tract < % Renters in county, 1: % Renters in tract > % Renters in county | renter_v  |
+| % People of color at census tract and county levels | 0: % People of Color in tract < % People of Color in county, 1: % People of Color in tract > % People of Color in county | poc_v  |
+| % People over 25 without a college degree at census tract and county levels | 0: % People over 25 without a college degree in tract < % People over 25 without a college degree in county, 1: % People over 25 without a college degree in tract > % People over 25 without a college degree in county  | nocollege_v  |
+| Median Family Income at census tract and county levels | 0: Median Family Income in tract > Median Family Income in county, 1: Median Family Income in tract < Median Family Income in county | mfi_v  |
+| **Vulnerability to Gentrification Index** | Score 0-4 (sum of 4 variables above)  |  v_index  |
+
+#### Bates (2013) - Gentrification-Related Demographic Change
+| Indicator      | Output values |  variable  |
+| ------------------------------------ | ------------------------------------------ | -----------  |
+| % Change in renters Year 1-2 at census tract and county levels | 0: % Change in renters in tract < % Renters in county, 1: % Change in renters in tract > % Change in renters in county | tenure_change  |
+| % Change in People of color at census tract and county levels | 0: % Change in People of Color in tract < % Change in People of Color in county, 1: % Change in People of Color in tract > % Change in People of Color in county | race_change  |
+| % Change in people over 25 without a college degree at census tract and county levels | 0: % Change in people over 25 without a college degree in tract < % Change in people over 25 without a college degree in county, 1: % Change in people over 25 without a college degree in tract > % Change in people over 25 without a college degree in county  | edu_change  |
+| % Change in Median Household Income at census tract and county levels | 0: % Change in Median Household Income in tract > % Change in Median Household Income in county, 1: % Change Median Household Income in tract < % Change Median Household Income in county | income_change  |
+| **Presence of Gentrification-Related Demographic Change Index**  | Score 0-4 (sum of 4 variables above)  |  dem_change_index  |
+
+#### Bates (2013) - Home Value Typology
+| Indicator      | Output values |  Variable  |
+| ------------------------------------ | ------------------------------------------ | -----------  |
+| Median home value in tract (year 0) | lowmod : bottom 3 quintiles, high: top 2 quintiles | homevalueq_yr0  |
+| Median home value in tract (year 1) | lowmod : bottom 3 quintiles, high: top 2 quintiles | homevalueq_yr1  |
+| Median home value in tract (year 2) | lowmod : bottom 3 quintiles, high: top 2 quintiles  | homevalueq_yr2  |
+| Change in median home value year 0-1 | lowmod : bottom 3 quintiles, high: top 2 quintile | homevalueq_change_01  |
+| Change in median home value year 1-2 | lowmod : bottom 3 quintiles, high: top 2 quintile | homevalueq_change_12  |
+| Change in median home value year 0-2 | lowmod : bottom 3 quintiles, high: top 2 quintile | homevalueq_change_02  |
+| **Home Value Typology Index**  | Each tract has a value of 'adjacent' (low or moderate Year 2 value, low or moderate Year 0 - Year 1 appreciation, touch boundary of one tract with high Year 2 value), 'accelerating' (low or moderate Year 2 value, high Year 1-Year 2 apprecation), 'appreciated' (low or moderate Year 0 value, high Year 2 value, high Year 0 -Year 2 appreciation), or 'no_typology'  |  mhv_type  |
+
+#### Freeman (2005) Gentrification Index
+| Indicator      | Output values |  Variable  |
+| ------------------------------------ | ------------------------------------------ | -----------  |
+| % housing units built in the last 20 years | 0: % new housing units in tract < % new housing in county , 1: % new housing units in tract < % new housing in count | newhouse_f_index  |
+| % People over 25 without a college degree at census tract and county levels | 0: % People over 25 without a college degree in tract < % People over 25 without a college degree in county, 1: % People over 25 without a college degree in tract > % People over 25 without a college degree in county  | nocollege_f_index  |
+| Median Household Income at census tract and county levels | 0: Median Household Income in tract > Median Household Income in county, 1: Median Household Income in tract < Median Household Income in county | mhi_f_index  |
+| Median housing value at tract level years 1-2 | 0: median housing value in year 1 > median housing value in year 2, 1: median housing value in year 1 < median housing value in year 2 | mhv_f_index  |
+| Freeman Gentrification Index  | Score 0-4 (sum of 4 variables above)  |  freeman  |
+
+### Ding et al. (2016)
+
+Ding et al. (2016) usese data from 2 years (years 1-2) to calculate one index that classifies tracts as experiencing intense gentrification, moderate gentrification, weak gentrification, no gentrification, or as non-gentrifiable.
+
+#### Ding et a. (2016) - Gentrification Index
+| Indicator      | Output values |  Variable  |
+| ------------------------------------ | ------------------------------------------------ | -----------  |
+| Median Household Income at census tract and county levels | 0 (gentrifiable = False): Median Household Income in tract > Median Household Income in county, 1 (gentrifiable = True): Median Household Income in tract < Median Household Income in county | hhi_crit, gentrifiable  |
+| % Change in Median Rent at census tract and county levels | 0: % Change in Median Rent in tract < % Change in Median Rent in county, 0.5: % Change Median Rent in tract > % Change Median Rent in county | rent_crit  |
+| % Change in Median Home Value at census tract and county levels | 0: % Change in Median Home Value in tract < % Change in Median Home Value in county, 0.5: % Change Median Home Value in tract > % Change Median Home Value in county | value_crit  |
+| % Change in people over 25 without a college degree at census tract and county levels | 0: % Change in people over 25 without a college degree in tract < % Change in people over 25 without a college degree in county, 1: % Change in people over 25 without a college degree in tract > % Change in people over 25 without a college degree in county  | edu_crit  |
+| Sum of Gentrification Criteria  |  0 - 3 (Sum of above 4 variables)  | crit  |
+| Presence of Gentrification  |  False: crit < 2.5, True: crit>= 2.5  |  gentrifying  |
+| **Gentrification Status**  | 'Weak Gentrification': meets gentrification criteria and in bottom two quartiles of criteria for change in median home values and rent, 'Moderate Gentrification': meets gentrification criteria and in middle two quartiles of criteria for change in median home values and rent, 'Strong Gentrification': meets gentrification criteria and in top quartile of criteria for change in median home values and rent, 'No Gentrification': tract is gentrifiable but does not meet gentrification criteria, 'Nongentrifiable': Does not meet income criteria in year 1 to be gentrifiable  |  gent_status  |
+
+Both indices are calculated using data at the census tract level for a single county. This package include functions to directly the pull data from the American Community Survey and Census and their respective Tiger/Line geometries and combine data accross years with conflicting geometries using areal interpolation from the Tobler package. 
 
 ## Getting Started
 
 ### Dependencies
 
-* Describe any prerequisites, libraries, OS version, etc., needed before installing program.
 * ex. Windows 10
+*
+*
 
 ### Installing
 
@@ -29,18 +91,61 @@ Researchers have developed many methods to quantify, measure, and predict the co
 
 ### Executing program
 
-* How to run the program
-* Step-by-step bullets
+##API Calls
+
+Description of module and comprehensive api functions
+
 ```
-code blocks for commands
+example code
+
+```
+
+Description of internal api call functions
+
+```
+example code
+
+```
+
+##Bates and Freeman Indices
+
+Description of module and calc_batesfreeman
+
+```
+example code
+
+```
+
+Description of margin of error functions
+
+```
+example code
+
+```
+
+##Ding Index
+
+Description of module and calc_ding function
+
+```
+example code
+
+``` 
+
+##Folium Maps
+
+Description of module and functions
+
+
+```
+example code
+
 ```
 
 ## Help
 
 Any advise for common problems or issues.
-```
-command to run if program contains helper info
-```
+
 
 ## Authors
 
@@ -51,9 +156,6 @@ ex. [@DomPizzie](https://twitter.com/dompizzie)
 
 ## Version History
 
-* 0.2
-    * Various bug fixes and optimizations
-    * See [commit change]() or See [release history]()
 * 0.1
     * Initial Release
 
@@ -63,9 +165,12 @@ This project is licensed under the [NAME HERE] License - see the LICENSE.md file
 
 ## Acknowledgments
 
-Inspiration, code snippets, etc.
-* [awesome-readme](https://github.com/matiassingers/awesome-readme)
-* [PurpleBooth](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
-* [dbader](https://github.com/dbader/readme-template)
-* [zenorocha](https://gist.github.com/zenorocha/4526327)
-* [fvcproductions](https://gist.github.com/fvcproductions/1bfc2d4aecb01a834b46)
+
+
+## References
+
+[^1] Bunten, Devin M. “Untangling the Housing Shortage and Gentrification.” Bloomberg. October 23, 2019. [Link.](https://www.bloomberg.com/news/articles/2019-10-23/untangling-the-housing-shortage-and-gentrificatiom)
+[^2] Zuk, Miriam, Ariel H. Bierbaum, Karen Chapple, Karolina Gorska, and Anastasia Loukaitou-Sideris. “Gentrification, Displacement, and the Role of Public Investment.” Journal of Planning Literature 33, no. 1 (February 1, 2018): 31–44. [https://doi.org/10.1177/0885412217716439.](https://doi.org/10.1177/0885412217716439)
+[^3] Bates, Lisa. 2013. “Gentrification and Displacement Study: Implementing an Equitable Inclusive Development Strategy in the Context of Gentrification.” Urban Studies and Planning Faculty Publications and Presentations, May. [https://doi.org/10.15760/report-01.](https://doi.org/10.15760/report-01)
+[^4] Freeman, Lance. 2005. “Displacement or Succession?: Residential Mobility in Gentrifying Neighborhoods.” Urban Affairs Review 40 (4): 463–91. [https://doi.org/10.1177/1078087404273341.](https://doi.org/10.1177/1078087404273341)
+[^5] Ding, Lei, Jackelyn Hwang, and Eileen Divringi. 2016. “Gentrification and Residential Mobility in Philadelphia.” Regional Science and Urban Economics 61: 38–51. [https://doi.org/10.1016/j.regsciurbeco.2016.09.004.](https://doi.org/10.1016/j.regsciurbeco.2016.09.004)

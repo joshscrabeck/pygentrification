@@ -433,7 +433,6 @@ def get_api_data_county(state, county, years, indices):
 ###TESTING###
 
 # testdf = get_api_data_tract('42', '101', years = [2000, 2010, 2020], indices = ["ding", "bates"] , crs = 'EPSG:2272')
-
 # testdf_area = get_api_data_county(42, 101, years = [2010,2020], indices = ["ding", "bates"])
             
             

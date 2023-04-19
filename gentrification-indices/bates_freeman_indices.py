@@ -1,7 +1,6 @@
 
 ###Calculating the Bates (2013) gentrification indices and the Freeman (2005) gentrification index###
 
-#%%
 import pandas as pd
 from math import sqrt
 import numpy as np
@@ -183,11 +182,12 @@ def calc_batesfreeman(df_area, df_tract, cols_area = ['area_med_house_inc_yr1', 
     
     #Bates Home Value Typologies Index#
     'homevalueq_yr0': The median home values of each tract in year 0 were separated into quantiles. The top two quantiles have the value "high" and the bottom three have the value "lowmed"
-    'homevalueq_yr2': The median home values of each tract in year 0 were separated into quantiles. The top two quantiles have the value "high" and the bottom three have the value "lowmed"
+    'homevalueq_yr1': The median home values of each tract in year 1 were separated into quantiles. The top two quantiles have the value "high" and the bottom three have the value "lowmed"
+    'homevalueq_yr2': The median home values of each tract in year 2 were separated into quantiles. The top two quantiles have the value "high" and the bottom three have the value "lowmed"
     'homevalueq_change_01': The change in median home values of each tract from year 0 to year 1 were separated into quantiles. The top two quantiles have the value "high" and the bottom three have the value "lowmed"
     'homevalueq_change_12': The change in median home values of each tract from year 1 to year 2 were separated into quantiles. The top two quantiles have the value "high" and the bottom three have the value "lowmed"
     'homevalueq_change_02': The change in median home values of each tract from year 0 to year 2 were separated into quantiles. The top two quantiles have the value "high" and the bottom three have the value "lowmed"
-    'mhv_type':  Each tract has a value of 'adjacent' (low or moderate Year 2 value, low or moderate 2000-Year 1 appreciation, touch boundary of one tract with high Year 2 value), 'accelerating' (low or moderate Year 2 value, high Year 1-Year 2 apprecation), 'appreciated' (low or moderate 2000 value, high Year 2 value, high 2000-Year 2 appreciation), or 'no_typology'
+    'mhv_type':  Each tract has a value of 'adjacent' (low or moderate Year 2 value, low or moderate YEar 0-Year 1 appreciation, touch boundary of one tract with high Year 2 value), 'accelerating' (low or moderate Year 2 value, high Year 1-Year 2 apprecation), 'appreciated' (low or moderate Year 0 value, high Year 2 value, high Year 0-Year 2 appreciation), or 'no_typology'
     
     #Freeman Index# ***This function assumes that all tracts analyzed meet Freeman's critera of being in the "central city" of a metropolitan area***
     'newhouse_f_index': If the % housing build in last 20 years in each tract in in year 2 is below the area median then value is 1, if not then value is 0

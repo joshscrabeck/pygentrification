@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 ###Constants needed for acs and census api requests###
 

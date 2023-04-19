@@ -1,7 +1,5 @@
 ###Calculating the Ding (2016) gentrification index###
 
-
-#%%
 import pandas as pd
 import numpy as np
 
@@ -78,6 +76,11 @@ def calc_ding( df_area, df_tract, cols_area = ['area_med_rent_yr1', 'area_med_re
         2'Intense Gentrification': tract gentrified during the time period and sits in the top quartile of gentrifying tracts based on home values or rents
         3'No Gentrification': the tract is able to gentrified but hasn't experienced gentrification during the time period
         4'Nongentrifiable': the tract is unable to gentrify
+        
+    References
+    ----------------
+    
+    
        '''
        
 # creating copies of input, used at the end for resulting DF dependent on inplace parameter choice
