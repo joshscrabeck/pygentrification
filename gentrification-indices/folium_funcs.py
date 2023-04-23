@@ -87,8 +87,7 @@ def ding_result_map(result_df, filename = 'ding_map.html'):
         name = 'Gentrification Status(detailed)'
         ))
     
-    
-    
+# Creating a basic macro element to act as the legend(s) for the resulting layers for the Ding function
     
     template_ding = """
     {% macro html(this, kwargs) %}
@@ -302,7 +301,8 @@ def bates_freeman_result_map(result_df, filename = 'bates_freeman_map.html'):
     https://python-visualization.github.io/folium/
        
       '''
-    
+# style functions for the resulting layers from the bates freeman function
+
     def dem_change_index_color(feature):
         if feature ['properties']['dem_change_index']== True :
             return 'orange'
@@ -344,8 +344,7 @@ def bates_freeman_result_map(result_df, filename = 'bates_freeman_map.html'):
         if feature['properties']['freeman']== 4:
             return '#08519c'
 
-    
-    
+#creating basemap and display origin point for the bates freeman results
     
     m = f.Map(
         location= [
@@ -415,8 +414,8 @@ def bates_freeman_result_map(result_df, filename = 'bates_freeman_map.html'):
                                          'weight':.3},
         name= 'Freeman Index'
         ))
-    
-    
+
+# creating a macro element to serve as the legends for the resulting map from the Bates Freeman function
     
     template_batesfreeman = """
     {% macro html(this, kwargs) %}
@@ -771,14 +770,4 @@ def bates_freeman_result_map(result_df, filename = 'bates_freeman_map.html'):
     
     return m
 
-#%%
-###TESTING###
 
-# from bates_freeman_indices import samedf, newdf
-
-# bates_freeman_result_map(samedf)
-
-
-
-# # ding_result_map(result_df).save('test.html')
-# # webbrowser.open("test.html")

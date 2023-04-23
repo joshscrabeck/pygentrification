@@ -79,7 +79,7 @@ def calc_ding( df_area, df_tract, cols_area = ['area_med_rent_yr1', 'area_med_re
         
     References
     ----------------
-    
+    Ding, Lei "Gentrification and Resident Mobility in Philadelphia" Regional Science and Urban Economics, vol. 16, November 2016, pg 38-51 https://doi.org/10.1016/j.regsciureco.2016.09.004
     
        '''
        
@@ -208,11 +208,4 @@ def calc_ding( df_area, df_tract, cols_area = ['area_med_rent_yr1', 'area_med_re
     return output
 
 
-#%%
-#TESTING
-
-# from api_calls import testdf, testdf_area
-
-# newdf = calc_ding(testdf_area, testdf, inplace = False)
-# samedf = calc_ding(testdf_area, testdf, inplace = True)
 
