@@ -92,7 +92,9 @@ Both indices are calculated using data at the census tract level for a single co
 
 ### Installing
 
-* 
+```
+pip install gentrificaton-indices
+```
 	
 ### Executing program
 

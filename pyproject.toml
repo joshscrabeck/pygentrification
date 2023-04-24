@@ -4,13 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "gentrification_indices"
-version = "0.0.1"
-author = [
+version = "0.0.2"
+authors = [
   { name="Winn Costantini", email="wc555@drexel.edu"}, {name = "Adam Thompson", email = "adam.thompson0001@temple.edu"}, {name = "Josh Scrabeck", email = "joshua.scrabeck@temple.edu"},
 ]
 description = "A python package for calculating and visualizing gentrification indices from published academic research"
 readme = "README.md"
-requires-python = "==3.9.*"
+requires-python = ">=3.9, !=3.10"
 keywords = ["gentrification"]
 classifiers = [
     "Programming Language :: Python :: 3",
