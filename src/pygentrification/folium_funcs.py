@@ -1,4 +1,4 @@
-#Functions to create Folium maps from the output of the Bates-Freeman and Ding functions#
+fr#Functions to create Folium maps from the output of the Bates-Freeman and Ding functions#
 
 import folium as f
 import branca

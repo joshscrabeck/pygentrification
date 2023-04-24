@@ -4,6 +4,8 @@
 import pandas as pd
 from math import sqrt
 import numpy as np
+import os
+os.environ['USE_PYGEOS'] = '0'
 import geopandas as gpd
 
 #%%
