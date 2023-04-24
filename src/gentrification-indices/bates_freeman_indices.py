@@ -664,13 +664,5 @@ def calc_batesfreeman(df_area, df_tract, cols_area = ['area_med_house_inc_yr1', 
         
     return output
 
-#%%
-
-###TEST###
-
-from api_calls import testdf, testdf_area
-
-newdf = calc_batesfreeman(testdf_area, testdf, inplace = False)
-samedf = calc_batesfreeman(testdf_area, testdf, inplace = True)
 
 

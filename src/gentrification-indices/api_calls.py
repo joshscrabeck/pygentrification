@@ -26,15 +26,17 @@ def acs_request_tract(year, state, county, req_vars):
     
     Parameters
     ----------------
-    year: year (int)
-    state: FIPS State Numeric Code (int)
-    county: FIPS County Numeric Code (int)
-    req_vars: variables being requested from the Census API related to the requested index (string)
-
+    year: int or string
+    state: int or string 
+        FIPS State Numeric Code
+    county: int or string 
+        FIPS County Numeric Code
+    req_vars: list
+        variables being requested from the Census API related to the requested index
     
     Returns
     ----------------
-    df
+    DataFrame
     
     '''
     HOST = "https://api.census.gov/data"
@@ -64,15 +66,17 @@ def acs_request_area(year, state, county, req_vars):
     
     Parameters
     ----------------
-    year: year (int)
-    state: FIPS State Numeric Code (int)
-    county: FIPS County Numeric Code (int)
-    req_vars: variables being requested from the Census API related to the requested index (string)
-
+    year: int or string
+    state: int or string 
+        FIPS State Numeric Code
+    county: int or string 
+        FIPS County Numeric Code
+    req_vars: list
+        variables being requested from the Census API related to the requested index (string)
     
     Returns
     ----------------
-    df
+    DataFrame
     
     '''
     HOST = "https://api.census.gov/data"
@@ -100,16 +104,17 @@ def census_request_tract(year, state, county, req_vars):
     
     Parameters
     ----------------
-    year: year (int)
-    state: FIPS State Numeric Code (int)
-    county: FIPS County Numeric Code (int)
-    req_vars: variables being requested from the Census API related to the 
-    requested index (string)
+    year: int or string
+    state: int or string 
+        FIPS State Numeric Code
+    county: int or string 
+        FIPS County Numeric Code
+    req_vars: list
+        variables being requested from the Census API related to the requested index
 
-    
     Returns
     ----------------
-    df
+    DataFrame
     
     '''
     HOST = "https://api.census.gov/data"
@@ -136,13 +141,15 @@ def tiger_request(year, state, county):
     
     Parameters
     ----------------
-    year: year (int)
-    state: FIPS State Numeric Code (int)
-    county: FIPS County Numeric Code (int)
+    year: int or string
+    state: int or string
+        FIPS State Numeric Code 
+    county: int or string
+        FIPS County Numeric Code
     
     Returns
     ----------------
-    df
+    GeoDataFrame
     
     '''
     if int(year) < 2010:
@@ -177,14 +184,14 @@ def tract_merge(acs_df, t_df):
     
     Parameters
     ----------------
-    acs_df: ACS request dataframe with variable information, state, and county
-    information. 
-    t_df: tiger request dataframe with tract geometry
-
+    acs_df: df
+        ACS request dataframe with variable information, state, and county information. 
+    t_df: gdf
+        tiger request dataframe with tract geometry
     
     Returns
     ----------------
-    df
+    GeoDataFrame
     
     '''
     acs_df = acs_df.drop(columns = ['GEOID'])
@@ -196,7 +203,7 @@ def tract_merge(acs_df, t_df):
 
 ###comprehensive api call function for tract-level###
 
-def get_api_data_tract(state, county, years, indices, crs = 'EPSG:4269'):
+def get_api_data_tract(state, county, years, indices, proj_crs = 'EPSG:4269'):
     
     ''' 
     This function retrives data from the Census, 5 year 
@@ -205,16 +212,22 @@ def get_api_data_tract(state, county, years, indices, crs = 'EPSG:4269'):
     
     Parameters
     ----------------
-    state: FIPS State Numeric Code (int)
-    county: FIPS County Numeric Code (int) 
-    years: years (int)
-    indices: specify the index or indices for the correct variables to be 
-    retrieved.
-    crs: usable coordinate reference system applicable to the US.
+    state: string
+        FIPS State Numeric Cod
+    county: string 
+        FIPS County Numeric Code
+    years: list
+        years for api calls. "bates" requires 3 years, ding only requires 2.
+    indices: list
+        List of strings that pecify the index or indices for the correct variables to be 
+        retrieved. Acceptable arguments include "bates" and "ding".
+    proj_crs: string
+        EPSG for protected coordinate reference system for study area in 'EPSG: XXXX' format
     
     Returns
     ----------------
-    df
+    GeoDataFrame
+    
     
     '''
      
@@ -222,7 +235,7 @@ def get_api_data_tract(state, county, years, indices, crs = 'EPSG:4269'):
     
     ##CRS##
     
-    if crs == 'EPSG:4269':
+    if proj_crs == 'EPSG:4269':
         warnings.warn("The default coordinate reference system for this function is EPSG 4269, which is a geographic crs and may lead to inaccurate areal interpolation. For the most accurate data, please set the crs parameter to a projected crs that is appropriate for your study area.")
     
     ##years##
@@ -291,7 +304,7 @@ def get_api_data_tract(state, county, years, indices, crs = 'EPSG:4269'):
             #assign census_df_yr0 to output of census_request_tract function for 2000 and var_codes_yr0
             census_df_yr0 = census_request_tract(years[0], state, county, var_codes_yr0)
             #assign tiger_df_yr0 to output of tiger_request for 2000 and set crs
-            tiger_df_yr0 = tiger_request(years[0], state, county).to_crs(crs = crs)
+            tiger_df_yr0 = tiger_request(years[0], state, county).to_crs(crs = proj_crs)
             #merge and assign to df_yr0
             df_yr0 = tract_merge(census_df_yr0, tiger_df_yr0)
             #append df_year0 to df_list
@@ -300,7 +313,7 @@ def get_api_data_tract(state, county, years, indices, crs = 'EPSG:4269'):
             #assign acs_df_yr0 to output of acs_request_tract function for years[0] and var_codes_yr0
             acs_df_yr0 = acs_request_tract(years[0], state, county, var_codes_yr0)
             #assign tiger_df_yr0 to output of tiger_request for years[0] and set crs
-            tiger_df_yr0 = tiger_request(years[0], state, county).to_crs(crs = crs)
+            tiger_df_yr0 = tiger_request(years[0], state, county).to_crs(crs = proj_crs)
             #merge and assign to df_yr0
             df_yr0 = tract_merge(acs_df_yr0, tiger_df_yr0)
             #append df_year0 to df_list
@@ -311,7 +324,7 @@ def get_api_data_tract(state, county, years, indices, crs = 'EPSG:4269'):
     #assign acs_df_yr1 to output of acs_request_tract function for years[1] and var_codes_yr1
     acs_df_yr1 = acs_request_tract(years[-2], state, county, var_codes_yr1) 
     #assign tiger_df_yr1 to output of tiger_request for years[1] and set crs
-    tiger_df_yr1 = tiger_request(years[-2], state, county).to_crs(crs = crs)    
+    tiger_df_yr1 = tiger_request(years[-2], state, county).to_crs(crs = proj_crs)    
     #merge and assign to df_yr1
     df_yr1 = tract_merge(acs_df_yr1, tiger_df_yr1)
     #append df_yr1 to df_list
@@ -321,7 +334,7 @@ def get_api_data_tract(state, county, years, indices, crs = 'EPSG:4269'):
     #assign acs_df_yr2 to output of acs_request_tract function for years[2] and var_codes_yr2
     acs_df_yr2 = acs_request_tract(years[-1], state, county, var_codes_yr2)  
     #assign tiger_df_yr2 to output of tiger_request for years[2] and set crs
-    tiger_df_yr2 = tiger_request(years[-1], state, county).to_crs(crs = crs)
+    tiger_df_yr2 = tiger_request(years[-1], state, county).to_crs(crs = proj_crs)
     #merge and assign to df_yr2
     df_yr2 = tract_merge(acs_df_yr2, tiger_df_yr2)    
     #append df_yr2 to df_list
@@ -351,16 +364,17 @@ def get_api_data_county(state, county, years, indices):
       
     Parameters
     ----------------
-    state: FIPS State Numeric Code (int)
-    county: FIPS County Numeric Code (int)
-    years: years (int)
-    indices: specify the index or indices for the correct variables to be 
-    retrieved.
-    crs: usable coordinate reference system applicable to the US.
-      
+    state: int or string
+        FIPS State Numeric Code
+    county: int or string
+        FIPS County Numeric Cod
+    years: list
+    indices: list
+        specify the index or indices for the correct variables to be  retrieved.
+    
     Returns
     ----------------
-    df
+    DataFrame
       
     '''
     #sort years
@@ -427,15 +441,6 @@ def get_api_data_county(state, county, years, indices):
         
         
     return df    
-            
-#%%
-
-###TESTING###
-
-# testdf = get_api_data_tract('42', '101', years = [2000, 2010, 2020], indices = ["ding", "bates"] , crs = 'EPSG:2272')
-# testdf_area = get_api_data_county(42, 101, years = [2010,2020], indices = ["ding", "bates"])
-            
-            
             
             
             

@@ -1,6 +1,6 @@
 # Gentrification Indices
 
-A python module for calculating and visualizing gentrification indices from published academic research
+A python package for calculating and visualizing gentrification indices from published academic research
 
 ## Description
 
@@ -80,71 +80,71 @@ Both indices are calculated using data at the census tract level for a single co
 
 ### Dependencies
 
-* 
-* An IDE compatible with Python
+* Python 3.9.*
+* numpy == 1.22.4
+* pandas
+* geopandas
+* folium
+* tobler
+* branca
+* requests
+
 
 ### Installing
 
-* To install without Git
-	*Press Green button of code on main Github page and "Download Zip" 
-* To install with Git
-	*Fire up the command line and change your directory to a new folder
-	*Use "Git Clone (link)" and Copy and paste the "HTTPS" link to the github repository into the command line
+* 
 	
 ### Executing program
 
-##API Calls.py
+##API Calls
 
-This module contains all the data requests a user might need to make to calculate the Indices. This includes using 5 Year - American Community Survery, Dicennial Census, and TIGER Census data.
+This module contains all the data requests a user might need to make to calculate the indices included in the package. This includes using 5 Year - American Community Survery, Dicennial Census, and TIGER Census data.
 
+Each index requires data at the tract level and data for the county as a whole. Identiy the county and state using FIPS codes. 
+The two example calls below would return the two dataframes needed to calculate the bates-freeman indices and ding index for Philadelphia County (101) in PA (42) using data from 2000, 2010, and 2020.
 
-This is an example of an internal api call which is used as a part of the comprehensive api call
-
-```
-census_request_tract(2017, 42, 101, ding_vars)
-
-```
-
-
-
-This is an example of how to use the comprehensive api call for both the tract and county level
+The function will return data in EPSG 4269, but requires a proj_parameter that indicates the projected crs that will be used for areal interpolation needed to harmonize data to census tract boundaries for different years.
 
 ```
-get_api_data_tract(42, 101, years = [2010, 2020], indices = "ding", crs = 'EPSG:4269')
-get_api_data_county(42, 101, years = [2010, 2020], indices = "ding", "bates")
+tract_gdf = get_api_data_tract("42", "101", years = [2000, 2010, 2020], indices = ["bates", "ding"], proj_crs = "EPSG: 2272")
+
+county_gdf = get_api_data_county("42", "101", years = [2000, 2010, 2020], indices = ["bates", "ding"])
 
 ```
+
 
 ##Bates and Freeman Indices
 
 This module contains the data prep steps, index calculation, and dataframe creation of the Bates-Freeman index
 
 
-calc_batesfreeman is a function that calculates the index according to Bates-Freeman, as cited above
+calc_batesfreeman is a function that calculates the index according to Bates-Freeman, as cited above. If using a GeoDataFrame retrieved with the functions above, an example call would be: 
 
 ```
-calc_batesfreeman(df_area, df_tract, cols_area = [list], cols_tract = [list] inplace = False):
+bates_freeman_gdf = calc_batesfreeman(county_gdf, tract_gdf, inplace = False)
 
 ```
 
-
-
-This function calculates the margin of error for the summed value of a column (in this case, the aggregated value across all census tracts)
-
-```
-moe_alltracts(df, col)
+Users may also use data retrieved in other ways as long as:
+*one is a gdf at the tract level of the study area and one is a df or gdf values for the area as a whole 
+*each dataset has data for the acs and census variables required for calculating the indices in this script for the years specified. 
+*they specify column column names as a list with an order that corresponds exactly with the default values for th cols_tract and cols_area parameters.
 
 ```
+cols_area = ['area_med_house_inc_yr1', 'area_med_house_inc_e_yr1', 'area_med_house_inc_yr2', 'area_med_house_inc_e_yr2', 'area_med_fam_inc_yr2', 'area_med_fam_inc_e_yr2']
+cols_tract = ['pop_tenure_yr1', 'owner_yr1', 'renter_yr1', 'pop_tenure_yr2', 'owner_yr2', 'renter_yr2', 'pop_25_over_yr1', 'ba_degree_m_yr1', 'ma_degree_m_yr1', 'prof_degree_m_yr1', 'doc_degree_m_yr1', 'ba_degree_f_yr1', 'ma_degree_f_yr1', 'prof_degree_f_yr1', 'doc_degree_f_yr1', 'pop_25_over_yr2', 'ba_degree_m_yr2','ma_degree_m_yr2', 'prof_degree_m_yr2', 'doc_degree_m_yr2', 'ba_degree_f_yr2','ma_degree_f_yr2', 'prof_degree_f_yr2', 'doc_degree_f_yr2','pop_race_yr1', 'white_yr1', 'pop_race_yr2', 'white_yr2', 'med_fam_inc_yr2', 'med_home_val_yr0', 'med_home_val_yr1', 'med_home_val_yr2', 'med_house_inc_yr1', 'med_house_inc_yr2', 'tot_house_yr2', 'new_house_col1', 'new_house_col2', 'new_house_col3']
+```
+    
 
 ##Ding Index
 
 This module contains the data prep steps, index calculation, and dataframe creation of the Ding index
 
 
-calc_batesfreeman is a function that calculates the index according to Ding, as cited above
+calc_batesfreeman is a function that calculates the index according to Ding, as cited above. If using a GeoDataFrame retrieved with the functions above, an example call would be: 
 
 ```
-calc_ding(df_area, df_tract, cols_area = [list], cols_tract = [list] inplace = False):
+ding_gdf = calc_ding(county_gdf, tract_gdf, inplace = False):
 
 ``` 
 
@@ -152,13 +152,27 @@ calc_ding(df_area, df_tract, cols_area = [list], cols_tract = [list] inplace = F
 
 This module contains functions to create Folium maps from the output of Bates-Freeman and Ding functions hosted on a local HTML site.
 
+The crs for the input gdf MUST be EPSG: 4269.
 
-
-This function takes in the GeoDataFrame generated by the calc_batesfreeman function fand outputs and map object of a Folium map. It saves an html file of the map object to the working directorand opens it in a web browser.
+This function takes in the GeoDataFrame generated by the calc_batesfreeman function fand outputs and map object of a Folium map. It saves an html file of the map object to the working directory.
 ```
-bates_freeman_result_map(result_df, filename = 'bates_freeman_map.html'):
+bates_freeman_result_map(bates_freeman_gdf, filename = 'bates_freeman_map.html'):
 ```
 
+This function takes in the GeoDataFrame generated by the calc_ding function fand outputs and map object of a Folium map. It saves an html file of the map object to the working directory.
+```
+ding_result_map(ding_gdf, filename = 'ding_map.html'):
+```
+
+Users may also use data retrieved in other ways as long as:
+*one is a gdf at the tract level of the study area and one is a df or gdf values for the area as a whole 
+*each dataset has data for the acs and census variables required for calculating the indices in this script for the years specified. 
+*they specify column column names as a list with an order that corresponds exactly with the default values for th cols_tract and cols_area parameters.
+
+```
+cols_area = ['area_med_rent_yr1', 'area_med_rent_yr2', 'area_med_home_val_yr1', 'area_med_home_val_yr2', 'area_med_house_inc_yr1', 'area_med_house_inc_yr2']
+cols_tract=['med_rent_yr1', 'med_rent_yr2', 'med_home_val_yr1', 'med_home_val_yr2', 'pop_25_over_yr1' 'ba_degree_m_yr1', 'ma_degree_m_yr1', 'prof_degree_m_yr1', 'doc_degree_m_yr1, ba_degree_f_yr1', 'ma_degree_f_yr1', 'prof_degree_f_yr1', 'doc_degree_f_yr1', 'pop_25_over_yr2', 'ba_degree_m_yr2', 'ma_degree_m_yr2', 'prof_degree_m_yr2', 'doc_degree_m_yr2', 'ba_degree_f_yr2', 'ma_degree_f_yr2', 'prof_degree_f_yr2', 'doc_degree_f_yr2', 'med_house_inc_yr1', 'med_house_inc_yr2']
+```
 
 
 ## Authors
@@ -176,7 +190,7 @@ Josh Scrabeck (https://github.com/joshscrabeck)
 
 ## License
 
-This project is licensed under the [NAME HERE] License - see the LICENSE.md file for details (TBD)
+This project is licensed under the BSD License - see the LICENSE.txt file for details
 
 ## Acknowledgments
 

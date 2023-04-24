@@ -10,8 +10,10 @@ def ding_result_map(result_df, filename = 'ding_map.html'):
     
     Parameters
     -------------
-    result_df: GeoDataFrame from ding function
-    file_name: name for output html file. Default name is ding_map.html 
+    result_df: gdf
+        GeoDataFrame from ding function
+    file_name: string
+        name for output html file. Default name is ding_map.html 
 
     Returns
     ------------
@@ -289,8 +291,10 @@ def bates_freeman_result_map(result_df, filename = 'bates_freeman_map.html'):
     
     Parameters
     -------------
-    result_df: GeoDataFrame from calc_batesfreeman function
-    file_name: name for output html file. Default name is ding_map.html 
+    result_df: gdf
+        GeoDataFrame from calc_batesfreeman function 
+    file_name: string
+        name for output html file. Default name is ding_map.html 
 
     Returns
     ------------
@@ -769,5 +773,4 @@ def bates_freeman_result_map(result_df, filename = 'bates_freeman_map.html'):
     m.save(filename)
     
     return m
-
 

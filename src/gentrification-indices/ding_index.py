@@ -63,7 +63,7 @@ def calc_ding( df_area, df_tract, cols_area = ['area_med_rent_yr1', 'area_med_re
        
     Returns
     --------
-    geodataframe
+    GeoDataFrame
     
     
     Notes
@@ -206,6 +206,5 @@ def calc_ding( df_area, df_tract, cols_area = ['area_med_rent_yr1', 'area_med_re
         output = pd.merge(copy_df, new_cols, left_index = True, right_index = True)
     
     return output
-
 
 

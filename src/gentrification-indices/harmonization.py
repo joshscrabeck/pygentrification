@@ -97,24 +97,5 @@ def harmonize_tracts(target_df, input_dfs = []):
 
     return output
 
-#%%
-
-###TEST###
-
-# from api_calls import acs_request_tract, tiger_request, tract_merge, census_request_tract
-# from indices_constants import ding_vars, bates_vars_census_yr0
-
-# acs10 = acs_request_tract(2010, 42, 101, ding_vars)
-# acs20 = acs_request_tract(2020, 42, 101, ding_vars)
-# acs00 = census_request_tract(2000, 42, 101, bates_vars_census_yr0)
-# tiger10 = tiger_request(2010, 42, 101)
-# tiger20 = tiger_request(2020, 42, 101)
-# tiger00 = tiger_request(2000,42,101)
-# shp10 = tract_merge(acs10, tiger10)
-# shp20 = tract_merge(acs20, tiger20)
-# shp00 = tract_merge(acs00, tiger00)
-
-# test = harmonize_tracts(shp20, input_dfs = [shp00, shp10])
-
 
 
