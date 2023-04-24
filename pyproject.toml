@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "gentrification_indices"
+name = "pygentrification"
 version = "0.0.2"
 authors = [
   { name="Winn Costantini", email="wc555@drexel.edu"}, {name = "Adam Thompson", email = "adam.thompson0001@temple.edu"}, {name = "Josh Scrabeck", email = "joshua.scrabeck@temple.edu"},
@@ -25,7 +25,7 @@ dependencies = ["requests",
 "branca"]
 
 [project.urls]
-"Homepage" = "https://github.com/joshscrabeck/gentrification-indices"
+"Homepage" = "https://github.com/joshscrabeck/pygentrification"
 
 
 
