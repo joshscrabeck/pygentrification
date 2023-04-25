@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pygentrification"
-version = "0.0.3"
+version = "0.0.4"
 authors = [
   { name="Winn Costantini", email="wc555@drexel.edu"}, {name = "Adam Thompson", email = "adam.thompson0001@temple.edu"}, {name = "Josh Scrabeck", email = "joshua.scrabeck@temple.edu"},
 ]

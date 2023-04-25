@@ -8,7 +8,7 @@ from zipfile import ZipFile
 import urllib
 import os
 os.environ['USE_PYGEOS'] = '0'
-import geopandas
+import geopandas as gpd
 import warnings
 from tobler.area_weighted import area_interpolate
 from functools import reduce

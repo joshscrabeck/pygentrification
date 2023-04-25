@@ -1,0 +1,13 @@
+LICENSE.txt
+README.md
+pyproject.toml
+src/pygentrification/__init__.py
+src/pygentrification/api_calls.py
+src/pygentrification/bates_freeman_indices.py
+src/pygentrification/ding_index.py
+src/pygentrification/folium_funcs.py
+src/pygentrification.egg-info/PKG-INFO
+src/pygentrification.egg-info/SOURCES.txt
+src/pygentrification.egg-info/dependency_links.txt
+src/pygentrification.egg-info/requires.txt
+src/pygentrification.egg-info/top_level.txt
