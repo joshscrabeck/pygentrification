@@ -1,4 +1,4 @@
-# Gentrification Indices
+# PyGentrification: Gentrification Indices
 
 A python package for calculating and visualizing gentrification indices from published academic research
 

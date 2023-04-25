@@ -337,15 +337,9 @@ def bates_freeman_result_map(result_df, filename = 'bates_freeman_map.html'):
             return '#c51b8a'
         
     def freeman_index_color(feature):
-        if feature['properties']['freeman']== 0:
+        if feature['properties']['freeman']== False:
             return 'white'
-        if feature['properties']['freeman']== 1:
-            return '#bdd7e7'
-        if feature['properties']['freeman']== 2:
-            return '#6baed6'
-        if feature['properties']['freeman']== 3:
-            return '#3182bd'
-        if feature['properties']['freeman']== 4:
+        if feature['properties']['freeman']== True:
             return '#08519c'
 
 #creating basemap and display origin point for the bates freeman results
@@ -548,11 +542,8 @@ def bates_freeman_result_map(result_df, filename = 'bates_freeman_map.html'):
     <div class='legend-title'>Freeman Index Scores</div>
     <div class='legend-scale'>
       <ul class='legend-labels'>
-        <li><span style='background:white;opacity:0.7;'></span>0</li>
-        <li><span style='background:#bdd7e7;opacity:0.7;'></span>1</li>
-        <li><span style='background:#6baed6;opacity:0.7;'></span>2</li>
-        <li><span style='background:#3182bd;opacity:0.7;'></span>3</li>
-        <li><span style='background:#08519c;opacity:0.7;'></span>4</li>
+        <li><span style='background:white;opacity:0.7;'></span>False</li>
+        <li><span style='background:#08519c;opacity:0.7;'></span>True</li>
     
     
       </ul>

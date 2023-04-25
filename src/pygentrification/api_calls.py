@@ -4,8 +4,6 @@
 from io import BytesIO
 import requests
 import pandas as pd
-import geopandas as gpd
-#import json
 from zipfile import ZipFile
 import urllib
 import os

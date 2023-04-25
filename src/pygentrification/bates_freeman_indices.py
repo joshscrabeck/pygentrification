@@ -196,7 +196,7 @@ def calc_batesfreeman(df_area, df_tract, cols_area = ['area_med_house_inc_yr1', 
     'nocollege_f_index': If change in % 25+ without a college degree year 1 to year 2 is above the area percentage point change then value is 1, if not then value is 0
     'mhi_f_index': If median household income in year 1 for each tract is < the city wide mhi in year 1 then value is 1, if not then value is 0
     'mhv_f_index': If median housing value increased in a tract from year 1 to year 2 then value is 1, if not then value is 0
-    'freeman': The sum of the the above variables to get a integer value of 0-4
+    'freeman': True if the criteria are met for all four variables, false if not.
 
     
     References
