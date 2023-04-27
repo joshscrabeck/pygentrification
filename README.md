@@ -98,7 +98,7 @@ pip install pygentrification
 	
 ### Executing program
 
-##API Calls
+## API Calls
 
 This module contains all the data requests a user might need to make to calculate the indices included in the package. This includes using 5 Year - American Community Survery, Dicennial Census, and TIGER Census data.
 
@@ -117,7 +117,7 @@ county_gdf = get_api_data_county("42", "101", years = [2000, 2010, 2020], indice
 ```
 
 
-##Bates and Freeman Indices
+## Bates and Freeman Indices
 
 This module contains the data prep steps, index calculation, and dataframe creation of the Bates-Freeman index
 
@@ -132,9 +132,9 @@ bates_freeman_gdf = calc_batesfreeman(county_gdf, tract_gdf, inplace = False)
 ```
 
 Users may also use data retrieved in other ways as long as:
-*one is a gdf at the tract level of the study area and one is a df or gdf values for the area as a whole 
-*each dataset has data for the acs and census variables required for calculating the indices in this script for the years specified. 
-*they specify column column names as a list with an order that corresponds exactly with the default values for th cols_tract and cols_area parameters.
+* one is a gdf at the tract level of the study area and one is a df or gdf values for the area as a whole 
+* each dataset has data for the acs and census variables required for calculating the indices in this script for the years specified. 
+* they specify column column names as a list with an order that corresponds exactly with the default values for th cols_tract and cols_area parameters.
 
 ```
 cols_area = ['area_med_house_inc_yr1', 'area_med_house_inc_e_yr1', 'area_med_house_inc_yr2', 'area_med_house_inc_e_yr2', 'area_med_fam_inc_yr2', 'area_med_fam_inc_e_yr2']
@@ -142,7 +142,7 @@ cols_tract = ['pop_tenure_yr1', 'owner_yr1', 'renter_yr1', 'pop_tenure_yr2', 'ow
 ```
     
 
-##Ding Index
+## Ding Index
 
 This module contains the data prep steps, index calculation, and dataframe creation of the Ding index
 
@@ -156,7 +156,7 @@ ding_gdf = calc_ding(county_gdf, tract_gdf, inplace = False):
 
 ``` 
 
-##Folium Maps
+## Folium Maps
 
 This module contains functions to create Folium maps from the output of Bates-Freeman and Ding functions hosted on a local HTML site.
 
@@ -179,9 +179,9 @@ ding_result_map(ding_gdf, filename = 'ding_map.html'):
 ```
 
 Users may also use data retrieved in other ways as long as:
-*one is a gdf at the tract level of the study area and one is a df or gdf values for the area as a whole 
-*each dataset has data for the acs and census variables required for calculating the indices in this script for the years specified. 
-*they specify column column names as a list with an order that corresponds exactly with the default values for th cols_tract and cols_area parameters.
+* one is a gdf at the tract level of the study area and one is a df or gdf values for the area as a whole 
+* each dataset has data for the acs and census variables required for calculating the indices in this script for the years specified. 
+* they specify column column names as a list with an order that corresponds exactly with the default values for th cols_tract and cols_area parameters.
 
 ```
 cols_area = ['area_med_rent_yr1', 'area_med_rent_yr2', 'area_med_home_val_yr1', 'area_med_home_val_yr2', 'area_med_house_inc_yr1', 'area_med_house_inc_yr2']
@@ -199,8 +199,13 @@ Josh Scrabeck (https://github.com/joshscrabeck)
 
 ## Version History
 
-* 0.1
-    * Initial Release
+* 0.0.1
+    *Initial release
+* 0.0.2
+* 0.0.3
+* 0.0.4
+* 0.0.5
+    * Current Release
 
 ## License
 
